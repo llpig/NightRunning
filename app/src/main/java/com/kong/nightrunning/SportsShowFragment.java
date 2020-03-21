@@ -38,7 +38,7 @@ public class SportsShowFragment extends Fragment {
     public void onStart() {
         super.onStart();
         handler = new SensorHandler();
-        int delayTime = 0, periodTime = 3000;
+        int delayTime = 0, periodTime = 1000;
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -48,7 +48,6 @@ public class SportsShowFragment extends Fragment {
                     message.arg1 = todayAddStepNumber;
                     handler.sendMessage(message);
                     lastTodayAddStepNumber = todayAddStepNumber;
-
                 }
             }
         };

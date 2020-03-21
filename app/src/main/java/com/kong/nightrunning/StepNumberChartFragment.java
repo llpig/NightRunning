@@ -186,7 +186,7 @@ public class StepNumberChartFragment extends Fragment {
 
             BarDataSet barDataSet = new BarDataSet(yValues, barName);
             barDataSet.setColor(barColor);
-            barDataSet.setValueTextSize(20f);
+            barDataSet.setValueTextSize(15f);
             barDataSet.setValueTextColor(barColor);
             barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
             barData.addDataSet(barDataSet);
@@ -236,7 +236,7 @@ public class StepNumberChartFragment extends Fragment {
 
         public List<Float> getBarYAxisValues() {
             NightRunningDatabase helper = ((MainActivity) getActivity()).helper;
-            List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), "测试1", "date('now','localtime','-7 days')");
+            List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), "测试1", "date('now','localtime','-6 days')");
             barYAxisValues.remove(barYAxisValues.size()-1);
             barYAxisValues.add(new Float(NightRunningSensorEventListener.getTodayAddStepNumber()));
             return barYAxisValues;

@@ -35,16 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <!-- 服务 -->
         <service android:name="com.kong.nightrunning.NightRunningService" />
-
-        <!-- 广播接收者 -->
-        <receiver android:name="com.kong.nightrunning.NightRunningService$NightRunningBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="Intent.ACTION_SHUTDOWN" />
-            </intent-filter>
-        </receiver>
 
         <provider
             android:name="com.amitshekhar.DebugDBInitProvider"
