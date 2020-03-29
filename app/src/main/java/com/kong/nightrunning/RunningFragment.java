@@ -15,6 +15,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.MyLocationStyle;
@@ -22,8 +23,8 @@ import com.amap.api.maps.model.MyLocationStyle;
 //跑步模式Fragment
 public class RunningFragment extends Fragment {
 
-    AMapLocationClient mapLocationClient = null;
-
+//    在用户进行跑步模式时，需要手机常亮。保证安全。
+    NightRunningMapLocation mapLocation=null;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,26 +33,9 @@ public class RunningFragment extends Fragment {
         // 此方法必须重写
         mapView.onCreate(savedInstanceState);
         setMapStyle(mapView);
+        mapLocation=new NightRunningMapLocation(getActivity().getApplicationContext());
+        mapLocation.startLocation();
         return view;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //启动服务
-        Intent mapServiceIntent=new Intent();
-        mapServiceIntent = new Intent(getActivity(), GaoDeMapService.class);
-        getActivity().startService(mapServiceIntent);
-
-        mapLocationClient = new AMapLocationClient(getActivity().getApplicationContext());
-        //定位回调监听器
-        AMapLocationListener mapLocationListener = new GaoDeMapService();
-        //在定位客户端设置定位回调监听器
-        mapLocationClient.setLocationListener(mapLocationListener);
-        mapLocationClient.setLocationOption(setMapLocationMode());
-        //重启定位，使得设置生效。
-        mapLocationClient.stopLocation();
-        mapLocationClient.startLocation();
     }
 
     //修稿地图样式
@@ -61,40 +45,17 @@ public class RunningFragment extends Fragment {
         // 连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。
         MyLocationStyle locationStyle = new MyLocationStyle();
         locationStyle.interval(timeCycle);
+        locationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW);
         //设置地图风格
         mapView.getMap().setMyLocationStyle(locationStyle);
-        LocationSource locationSource=new LocationSource() {
-            @Override
-            public void activate(OnLocationChangedListener onLocationChangedListener) {
-
-            }
-
-            @Override
-            public void deactivate() {
-
-            }
-        };
-//        mapView.getMap().setLocationSource();
+        mapView.getMap().setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+        mapView.getMap().moveCamera(CameraUpdateFactory.zoomTo(17));
     }
 
-    //设置定位模式
-    private AMapLocationClientOption setMapLocationMode() {
-        long timeCycle = 2000;
-        AMapLocationClientOption option = new AMapLocationClientOption();
-        //将定位模式设置为运动
-        option.setLocationPurpose(AMapLocationClientOption.AMapLocationPurpose.Sport);
-        //设置定位精度为高精度
-        option.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位为连续定位模式(2s自动定位一次)
-        option.setInterval(timeCycle);
-        return option;
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //定制定位并销毁定位客户端
-        mapLocationClient.stopLocation();
-        mapLocationClient.onDestroy();
+        mapLocation.destroyLocation();
     }
 }

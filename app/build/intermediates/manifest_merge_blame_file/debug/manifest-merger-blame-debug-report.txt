@@ -58,7 +58,7 @@
 34
 35    <!-- 活动 -->
 36    <application
-36-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:30:5-57:19
+36-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:30:5-56:19
 37        android:allowBackup="true"
 37-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:31:9-35
 38        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
@@ -107,27 +107,24 @@
 61        <service android:name="com.kong.nightrunning.NightRunningService" />
 61-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:9-56
 61-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:18-53
-62        <service android:name="com.kong.nightrunning.GaoDeMapService" />
-62-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:51:9-52
-62-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:51:18-49
-63        <!-- 添加高德地图 Key -->
-64        <meta-data
-64-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:53:9-55:74
-65            android:name="com.amap.api.v2.apikey"
-65-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:54:13-50
-66            android:value="af37360319da5aa1a56ebe367906f132" />
-66-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:55:13-61
-67
-68        <provider
-68-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:33:9-37:40
-69            android:name="com.amitshekhar.DebugDBInitProvider"
-69-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:34:13-63
-70            android:authorities="com.kong.nightrunning.DebugDBInitProvider"
-70-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:35:13-71
-71            android:enabled="true"
-71-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:36:13-35
-72            android:exported="false" />
-72-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:37:13-37
-73    </application>
-74
-75</manifest>
+62        <!-- 添加高德地图 Key -->
+63        <meta-data
+63-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:52:9-54:74
+64            android:name="com.amap.api.v2.apikey"
+64-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:53:13-50
+65            android:value="af37360319da5aa1a56ebe367906f132" />
+65-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:54:13-61
+66
+67        <provider
+67-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:33:9-37:40
+68            android:name="com.amitshekhar.DebugDBInitProvider"
+68-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:34:13-63
+69            android:authorities="com.kong.nightrunning.DebugDBInitProvider"
+69-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:35:13-71
+70            android:enabled="true"
+70-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:36:13-35
+71            android:exported="false" />
+71-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:37:13-37
+72    </application>
+73
+74</manifest>

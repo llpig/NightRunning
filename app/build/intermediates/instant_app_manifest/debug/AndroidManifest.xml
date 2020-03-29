@@ -60,7 +60,6 @@
         </activity>
         <!-- 服务 -->
         <service android:name="com.kong.nightrunning.NightRunningService" />
-        <service android:name="com.kong.nightrunning.GaoDeMapService" />
         <!-- 添加高德地图 Key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"

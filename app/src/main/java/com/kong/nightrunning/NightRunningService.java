@@ -19,10 +19,13 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NightRunningService extends Service {
+public class NightRunningService extends Service implements AMapLocationListener {
     private Sensor mSensor;
     //数据库
     private NightRunningDatabase helper;
@@ -155,14 +158,7 @@ public class NightRunningService extends Service {
         return builder.getNotification();
     }
 
-    private void registerBroadcastReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_TIME_TICK);
-        filter.addAction(Intent.ACTION_SHUTDOWN);
-        broadcastReceiver = new NightRunningBroadcastReceiver();
-        registerReceiver(broadcastReceiver, filter);
-    }
-
+    //计步器传感器记录记录今日起始步数
     public void sensorUpdateData(int startStepNumber) {
         //该方法只有计步器传感器才会调用
         if (yesterdayDateIsUpdate == false) {
@@ -189,6 +185,37 @@ public class NightRunningService extends Service {
         }
         //当服务关闭时，将数据库关闭
         helper.close();
+    }
+
+    //注册广播
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_TIME_TICK);
+        filter.addAction(Intent.ACTION_SHUTDOWN);
+        broadcastReceiver = new NightRunningBroadcastReceiver();
+        registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        double latitude, longitude;
+        float speed;
+        String detailedAddressInfo = "当前所在地详细地址：";
+        if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+            //获取精度
+            latitude = aMapLocation.getLatitude();
+            //获取维度
+            longitude = aMapLocation.getLongitude();
+            //获取速度
+            speed = aMapLocation.getSpeed();
+            //获取地址信息
+            detailedAddressInfo.concat(aMapLocation.getCountry() + aMapLocation.getCity());
+            Log.i("info", detailedAddressInfo + "(" + latitude + "," + longitude + ")" + speed);
+        } else if (aMapLocation != null) {
+            Log.e("Error", "location Error, ErrCode:"
+                    + aMapLocation.getErrorCode() + ", errInfo:"
+                    + aMapLocation.getErrorInfo());
+        }
     }
 
     public class NightRunningBroadcastReceiver extends BroadcastReceiver {
@@ -219,27 +246,5 @@ public class NightRunningService extends Service {
             }
         }
     }
+
 }
-
-
-//    @Override
-//    public void onLocationChanged(AMapLocation aMapLocation) {
-//        double latitude, longitude;
-//        float speed;
-//        String detailedAddressInfo = "当前所在地详细地址：";
-//        if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
-//            //获取精度
-//            latitude = aMapLocation.getLatitude();
-//            //获取维度
-//            longitude = aMapLocation.getLongitude();
-//            //获取速度
-//            speed = aMapLocation.getSpeed();
-//            //获取地址信息
-//            detailedAddressInfo.concat(aMapLocation.getCountry() + aMapLocation.getCity());
-//            Log.i("info", detailedAddressInfo + "(" + latitude + "," + longitude + ")" + speed);
-//        } else if (aMapLocation != null) {
-//            Log.e("Error", "location Error, ErrCode:"
-//                    + aMapLocation.getErrorCode() + ", errInfo:"
-//                    + aMapLocation.getErrorInfo());
-//        }
-//    }
