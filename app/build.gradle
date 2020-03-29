@@ -29,6 +29,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     //添加图表库MPAndroidChart依赖
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'], exclude: [])
+    implementation files('libs\\AMap3DMap_7.2.1_AMapNavi_7.2.0_AMapSearch_7.1.0_AMapTrack_1.2.0_AMapLocation_4.9.0_20200302.jar')
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

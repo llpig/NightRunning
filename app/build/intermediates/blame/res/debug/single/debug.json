@@ -12,16 +12,16 @@
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\fragment_sports_show.xml"
     },
     {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_recent_step_count.xml.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\fragment_recent_step_count.xml"
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_recent_step_count.xml.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\fragment_recent_step_count.xml"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",

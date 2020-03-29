@@ -37,8 +37,8 @@ public class NightRunningService extends Service {
 
     ContentValues values;
     int lastTodayAddStepNumber;
-    int countFlag=0;
-    private boolean yesterdayDateIsUpdate=true;
+    int countFlag = 0;
+    private boolean yesterdayDateIsUpdate = true;
 
     NightRunningSensorEventListener sensorEventListener;
 
@@ -72,7 +72,7 @@ public class NightRunningService extends Service {
         mSensor = sensorEventListener.registerSensor(this);
         if (mSensor != null) {
             registerBroadcastReceiver();
-            sendBroadcastToMainActivity();
+            updateForegroundTimer();
         }
     }
 
@@ -85,7 +85,7 @@ public class NightRunningService extends Service {
             if (helper.insertRecordsToMotionInfoTable(db, userName)) {
                 //重新查询
                 values = helper.selectRecordsToMotionInfoTable(db, userName, "date('now','localtime')");
-                yesterdayDateIsUpdate=false;
+                yesterdayDateIsUpdate = false;
             } else {
                 //如果没有创建成功，则提醒用户登录,并发送广播，退出服务
                 bRet = false;
@@ -100,8 +100,8 @@ public class NightRunningService extends Service {
         return bRet;
     }
 
-    //发送广播，通知MainActivity
-    private void sendBroadcastToMainActivity() {
+    //更新前台通知定时器
+    private void updateForegroundTimer() {
         int delayTime = 0, periodTime = 1000;
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -111,16 +111,15 @@ public class NightRunningService extends Service {
                     //启动前台服务(更换文字)
                     startForeground(Tool.MessageType.FOREGROUNDSERVICE.getIndex(), getNotification(String.valueOf(todayAddStepNumber)));
                     lastTodayAddStepNumber = todayAddStepNumber;
-                    countFlag=0;
-                }else{
+                    countFlag = 0;
+                } else {
                     ++countFlag;
-                    if(countFlag==300){
+                    if (countFlag == 300) {
                         //如果长时间没有计步，则每5分钟发送一次通知
                         startForeground(Tool.MessageType.FOREGROUNDSERVICE.getIndex(), getNotification(String.valueOf(lastTodayAddStepNumber)));
-                        countFlag=0;
+                        countFlag = 0;
                     }
                 }
-
             }
         };
         Timer timer = new Timer();
@@ -166,11 +165,11 @@ public class NightRunningService extends Service {
 
     public void sensorUpdateData(int startStepNumber) {
         //该方法只有计步器传感器才会调用
-        if(yesterdayDateIsUpdate==false){
+        if (yesterdayDateIsUpdate == false) {
             //如果昨天的数据没有正确保存，则重新保存。
-            String date="date('now','localtime','-1 days')";
-            int yesterdayAddStepNumber=startStepNumber-((int)helper.selectRecordsToMotionInfoTable(db,userName,date).get(nightRunningDB.motionInfoTable.stepNumber));
-            helper.upDateRecordsToMotionInfoTableNormal(db,userName,date,yesterdayAddStepNumber,0);
+            String date = "date('now','localtime','-1 days')";
+            int yesterdayAddStepNumber = startStepNumber - ((int) helper.selectRecordsToMotionInfoTable(db, userName, date).get(nightRunningDB.motionInfoTable.stepNumber));
+            helper.upDateRecordsToMotionInfoTableNormal(db, userName, date, yesterdayAddStepNumber, 0);
         }
         helper.upDateRecordsToMotionInfoTableNormal(db, userName, "date('now','localtime')", startStepNumber, 0);
     }
@@ -221,3 +220,26 @@ public class NightRunningService extends Service {
         }
     }
 }
+
+
+//    @Override
+//    public void onLocationChanged(AMapLocation aMapLocation) {
+//        double latitude, longitude;
+//        float speed;
+//        String detailedAddressInfo = "当前所在地详细地址：";
+//        if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+//            //获取精度
+//            latitude = aMapLocation.getLatitude();
+//            //获取维度
+//            longitude = aMapLocation.getLongitude();
+//            //获取速度
+//            speed = aMapLocation.getSpeed();
+//            //获取地址信息
+//            detailedAddressInfo.concat(aMapLocation.getCountry() + aMapLocation.getCity());
+//            Log.i("info", detailedAddressInfo + "(" + latitude + "," + longitude + ")" + speed);
+//        } else if (aMapLocation != null) {
+//            Log.e("Error", "location Error, ErrCode:"
+//                    + aMapLocation.getErrorCode() + ", errInfo:"
+//                    + aMapLocation.getErrorInfo());
+//        }
+//    }
