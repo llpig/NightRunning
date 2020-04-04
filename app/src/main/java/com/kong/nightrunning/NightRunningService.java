@@ -199,22 +199,12 @@ public class NightRunningService extends Service implements AMapLocationListener
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
         double latitude, longitude;
-        float speed;
-        String detailedAddressInfo = "当前所在地详细地址：";
         if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
-            //获取精度
+            //纬度
             latitude = aMapLocation.getLatitude();
-            //获取维度
+            //经度
             longitude = aMapLocation.getLongitude();
-            //获取速度
-            speed = aMapLocation.getSpeed();
-            //获取地址信息
-            detailedAddressInfo.concat(aMapLocation.getCountry() + aMapLocation.getCity());
-            Log.i("info", detailedAddressInfo + "(" + latitude + "," + longitude + ")" + speed);
-        } else if (aMapLocation != null) {
-            Log.e("Error", "location Error, ErrCode:"
-                    + aMapLocation.getErrorCode() + ", errInfo:"
-                    + aMapLocation.getErrorInfo());
+            Log.i("LocationInfo", "纬度：" + latitude + ",经度：" + longitude);
         }
     }
 
