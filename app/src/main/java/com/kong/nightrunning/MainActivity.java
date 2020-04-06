@@ -1,7 +1,10 @@
 package com.kong.nightrunning;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.BroadcastReceiver;
@@ -9,25 +12,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
-    private Tool tool=new Tool();
+    private Tool tool = new Tool();
     private TextView mTextViewTitle;
     private Intent serviceIntent;
     private Button mButtonUserAvatar, mButtonSportsShow, mButtonRunning, mButtonSportsCircle;
     public Fragment mLastFragment, mSportsShowFragment, mRunningFragment, mSportsCircleFragment;
-    public String userName;
     public NightRunningDatabase helper;
+    public static String TAG;
+    public static String USERNAME;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +45,12 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化Activity
     private void initActivity() {
+        TAG = getPackageName();
         //取消App的标题栏
         getSupportActionBar().hide();
         //从文件中读取用户名
-        userName=getSharedPreferences("test1",MODE_PRIVATE).getString("userName","");
-        helper=new NightRunningDatabase(this, "NightRunning", null, 1);
+        USERNAME = getSharedPreferences("test1", MODE_PRIVATE).getString("userName", "");
+        helper = new NightRunningDatabase(this, "NightRunning", null, 1);
         findViewAndSetOnClickListener();
         mTextViewTitle = findViewById(R.id.TextViewTitle);
         mSportsShowFragment = new SportsShowFragment();
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         if (NightRunningSensorEventListener.getTodayAddStepNumber() == -1) {
             stopService(serviceIntent);
             tool.hintMessage(MainActivity.this, "无可用传感器");
-        }else{
+        } else {
             tool.hintMessage(MainActivity.this, "传感器已注册，系统已开始记录步数");
         }
     }
@@ -121,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     //跑步点击事件
     private void runningOnClickListener() {
+
         mTextViewTitle.setText(R.string.running);
         mButtonSportsShow.setBackgroundResource(R.drawable.sports_show_black);
         mButtonRunning.setBackgroundResource(R.drawable.running_red);

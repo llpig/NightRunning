@@ -2,7 +2,27 @@ package com.kong.nightrunning;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+import android.widget.TabHost;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+
+import com.amap.api.maps.model.LatLng;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 
 //工具类
 public class Tool {
@@ -27,7 +47,7 @@ public class Tool {
     //自定义广播
     public static enum CustomBroadcast {
         UPDATASTEPNUMBER(packName + ".updatastepnumber"),
-        NULLSERSOR(packName+".nullsersor");
+        NULLSERSOR(packName + ".nullsersor");
         private String index;
 
         CustomBroadcast(String index) {
@@ -50,6 +70,52 @@ public class Tool {
         toast = Toast.makeText(currentContext, "", Toast.LENGTH_SHORT);
         toast.setText(message);
         toast.show();
+    }
+
+    //保存跑步路线数据
+    public static void saveRunningPathDate(String fileName, List<LatLng> lagLngs) {
+        String filePath = "/sdcard/NightRunning";
+        File pathDir = new File(filePath);
+        if (!pathDir.exists()) {
+            pathDir.mkdirs();
+        }
+        File pathDate = new File(pathDir, fileName);
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(pathDate, true);
+            for (LatLng latLng : lagLngs) {
+                outputStream.write((latLng.toString() + "\n").getBytes());
+            }
+            outputStream.close();
+            loadFileData(pathDir + "/" + fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void loadFileData(String fileName) {
+        FileInputStream inputStream = null;
+        String data="";
+        try {
+            inputStream = new FileInputStream(fileName);
+            int tmp=-1;
+            do{
+                tmp=inputStream.read();
+                if(tmp=='\n'){
+                    Log.i("DATA",data);
+                    data="";
+                }else{
+                    data+=(char)tmp;
+                }
+            }while(tmp!=-1);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //保存数据相关信息

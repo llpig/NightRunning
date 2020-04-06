@@ -35,96 +35,95 @@
 22-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:16:5-81
 22-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:16:22-78
 23    <!-- 高德地图定位所需权限 -->
-24    <!-- 用于写入缓存数据到扩展存储卡 -->
-25    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-25-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:8:5-81
-25-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:8:22-78
-26    <!-- 用于申请调用A-GPS模块 -->
-27    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-27-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:21:5-89
-27-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:21:22-86
-28    <!-- 用于访问网络，网络定位需要上网 -->
-29    <uses-permission android:name="android.permission.INTERNET" />
-29-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:6:5-67
-29-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:6:22-64
-30    <!-- 用于访问GPS定位 -->
-31    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-31-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:5-79
-31-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:22-76
-32    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-33    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-33-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-76
-33-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:22-73
-34
-35    <!-- 活动 -->
-36    <application
-36-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:30:5-56:19
-37        android:allowBackup="true"
-37-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:31:9-35
-38        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-38-->[androidx.core:core:1.1.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\77be7d3270c29f3380dfe0027fd17a86\core-1.1.0\AndroidManifest.xml:24:18-86
-39        android:debuggable="true"
-40        android:extractNativeLibs="false"
-41        android:icon="@mipmap/ic_launcher"
-41-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:32:9-43
-42        android:label="@string/app_name"
-42-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:33:9-41
-43        android:roundIcon="@mipmap/ic_launcher_round"
-43-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:34:9-54
-44        android:supportsRtl="true"
-44-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:35:9-35
-45        android:testOnly="true"
-46        android:theme="@style/AppTheme" >
-46-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:36:9-40
-47        <activity android:name="com.kong.nightrunning.PersonalCenterActivity" />
-47-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:37:9-60
-47-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:37:19-57
-48        <activity android:name="com.kong.nightrunning.UserRegisteredActivity" />
-48-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:38:9-60
-48-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:38:19-57
-49        <activity android:name="com.kong.nightrunning.UserLoginActivity" />
-49-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:39:9-55
-49-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:39:19-52
-50        <!-- 栈定复用 -->
-51        <activity
-51-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:41:9-48:20
-52            android:name="com.kong.nightrunning.MainActivity"
-52-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:42:13-41
-53            android:launchMode="singleTop" >
-53-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:43:13-43
-54            <intent-filter>
-54-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:44:13-47:29
-55                <action android:name="android.intent.action.MAIN" />
-55-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:45:17-69
-55-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:45:25-66
-56
-57                <category android:name="android.intent.category.LAUNCHER" />
-57-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:46:17-77
-57-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:46:27-74
-58            </intent-filter>
-59        </activity>
-60        <!-- 服务 -->
-61        <service android:name="com.kong.nightrunning.NightRunningService" />
-61-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:9-56
-61-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:18-53
-62        <!-- 添加高德地图 Key -->
-63        <meta-data
-63-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:52:9-54:74
-64            android:name="com.amap.api.v2.apikey"
-64-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:53:13-50
-65            android:value="af37360319da5aa1a56ebe367906f132" />
-65-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:54:13-61
-66
-67        <provider
-67-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:33:9-37:40
-68            android:name="com.amitshekhar.DebugDBInitProvider"
-68-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:34:13-63
-69            android:authorities="com.kong.nightrunning.DebugDBInitProvider"
-69-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:35:13-71
-70            android:enabled="true"
-70-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:36:13-35
-71            android:exported="false" />
-71-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:37:13-37
-72    </application>
-73
-74</manifest>
+24    <!-- 用于申请调用A-GPS模块 -->
+25    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+25-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:19:5-89
+25-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:19:22-86
+26    <!-- 用于访问网络，网络定位需要上网 -->
+27    <uses-permission android:name="android.permission.INTERNET" />
+27-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:6:5-67
+27-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:6:22-64
+28    <!-- 用于访问GPS定位 -->
+29    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+29-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:23:5-79
+29-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:23:22-76
+30    <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+31    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+31-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:5-76
+31-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:22-73
+32    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+32-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-79
+32-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:22-77
+33
+34    <!-- 活动 -->
+35    <application
+35-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:30:5-56:19
+36        android:allowBackup="true"
+36-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:31:9-35
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.1.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\77be7d3270c29f3380dfe0027fd17a86\core-1.1.0\AndroidManifest.xml:24:18-86
+38        android:debuggable="true"
+39        android:extractNativeLibs="false"
+40        android:icon="@mipmap/ic_launcher"
+40-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:32:9-43
+41        android:label="@string/app_name"
+41-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:33:9-41
+42        android:roundIcon="@mipmap/ic_launcher_round"
+42-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:34:9-54
+43        android:supportsRtl="true"
+43-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:35:9-35
+44        android:testOnly="true"
+45        android:theme="@style/AppTheme" >
+45-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:36:9-40
+46        <activity android:name="com.kong.nightrunning.PersonalCenterActivity" />
+46-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:37:9-60
+46-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:37:19-57
+47        <activity android:name="com.kong.nightrunning.UserRegisteredActivity" />
+47-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:38:9-60
+47-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:38:19-57
+48        <activity android:name="com.kong.nightrunning.UserLoginActivity" />
+48-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:39:9-55
+48-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:39:19-52
+49        <!-- 栈定复用 -->
+50        <activity
+50-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:41:9-48:20
+51            android:name="com.kong.nightrunning.MainActivity"
+51-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:42:13-41
+52            android:launchMode="singleTop" >
+52-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:43:13-43
+53            <intent-filter>
+53-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:44:13-47:29
+54                <action android:name="android.intent.action.MAIN" />
+54-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:45:17-69
+54-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:45:25-66
+55
+56                <category android:name="android.intent.category.LAUNCHER" />
+56-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:46:17-77
+56-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:46:27-74
+57            </intent-filter>
+58        </activity>
+59        <!-- 服务 -->
+60        <service android:name="com.kong.nightrunning.NightRunningService" />
+60-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:9-56
+60-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:50:18-53
+61        <!-- 添加高德地图 Key -->
+62        <meta-data
+62-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:52:9-54:74
+63            android:name="com.amap.api.v2.apikey"
+63-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:53:13-50
+64            android:value="af37360319da5aa1a56ebe367906f132" />
+64-->E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:54:13-61
+65
+66        <provider
+66-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:33:9-37:40
+67            android:name="com.amitshekhar.DebugDBInitProvider"
+67-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:34:13-63
+68            android:authorities="com.kong.nightrunning.DebugDBInitProvider"
+68-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:35:13-71
+69            android:enabled="true"
+69-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:36:13-35
+70            android:exported="false" />
+70-->[com.amitshekhar.android:debug-db:1.0.0] C:\Users\孔晨瑞\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:37:13-37
+71    </application>
+72
+73</manifest>

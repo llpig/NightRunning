@@ -237,7 +237,9 @@ public class StepNumberChartFragment extends Fragment {
         public List<Float> getBarYAxisValues() {
             NightRunningDatabase helper = ((MainActivity) getActivity()).helper;
             List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), "测试1", "date('now','localtime','-6 days')");
-            barYAxisValues.remove(barYAxisValues.size()-1);
+            if(barYAxisValues.size()!=0){
+                barYAxisValues.remove(barYAxisValues.size()-1);
+            }
             barYAxisValues.add(new Float(NightRunningSensorEventListener.getTodayAddStepNumber()));
             return barYAxisValues;
         }

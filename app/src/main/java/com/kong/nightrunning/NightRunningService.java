@@ -25,7 +25,7 @@ import com.amap.api.location.AMapLocationListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class NightRunningService extends Service implements AMapLocationListener {
+public class NightRunningService extends Service {
     private Sensor mSensor;
     //数据库
     private NightRunningDatabase helper;
@@ -162,10 +162,14 @@ public class NightRunningService extends Service implements AMapLocationListener
     public void sensorUpdateData(int startStepNumber) {
         //该方法只有计步器传感器才会调用
         if (yesterdayDateIsUpdate == false) {
-            //如果昨天的数据没有正确保存，则重新保存。
             String date = "date('now','localtime','-1 days')";
-            int yesterdayAddStepNumber = startStepNumber - ((int) helper.selectRecordsToMotionInfoTable(db, userName, date).get(nightRunningDB.motionInfoTable.stepNumber));
-            helper.upDateRecordsToMotionInfoTableNormal(db, userName, date, yesterdayAddStepNumber, 0);
+            ContentValues values = helper.selectRecordsToMotionInfoTable(db, userName, date);
+            if(values.size()!=0){
+                //如果昨天的数据没有正确保存，则重新保存。
+                int yesterdayAddStepNumber = startStepNumber - ((int) values.get(nightRunningDB.motionInfoTable.stepNumber));
+                helper.upDateRecordsToMotionInfoTableNormal(db, userName, date, yesterdayAddStepNumber, 0);
+            }
+
         }
         helper.upDateRecordsToMotionInfoTableNormal(db, userName, "date('now','localtime')", startStepNumber, 0);
     }
@@ -194,18 +198,6 @@ public class NightRunningService extends Service implements AMapLocationListener
         filter.addAction(Intent.ACTION_SHUTDOWN);
         broadcastReceiver = new NightRunningBroadcastReceiver();
         registerReceiver(broadcastReceiver, filter);
-    }
-
-    @Override
-    public void onLocationChanged(AMapLocation aMapLocation) {
-        double latitude, longitude;
-        if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
-            //纬度
-            latitude = aMapLocation.getLatitude();
-            //经度
-            longitude = aMapLocation.getLongitude();
-            Log.i("LocationInfo", "纬度：" + latitude + ",经度：" + longitude);
-        }
     }
 
     public class NightRunningBroadcastReceiver extends BroadcastReceiver {

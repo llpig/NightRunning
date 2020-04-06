@@ -73,17 +73,21 @@ ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:16:5-81
 	android:name
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:16:22-78
 uses-permission#android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
-ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:21:5-89
+ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:19:5-89
 	android:name
-		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:21:22-86
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:19:22-86
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:5-79
+ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:23:5-79
 	android:name
-		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:22-76
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:23:22-76
 uses-permission#android.permission.CHANGE_WIFI_STATE
-ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-76
+ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:5-76
 	android:name
-		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:22-73
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:22-73
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-79
+	android:name
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:22-77
 application
 ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:30:5-56:19
 MERGED from [com.amitshekhar.android:debug-db:1.0.0] C:\Users\¿×³¿Èð\.gradle\caches\transforms-2\files-2.1\c8159bd9d4afe39948adba0ad576d617\jetified-debug-db-1.0.0\AndroidManifest.xml:32:5-38:19
