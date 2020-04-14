@@ -45,7 +45,7 @@ public class StepNumberChartFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recent_step_count, container, false);
+        View view = inflater.inflate(R.layout.fragment_step_number_chart, container, false);
         stepNumberChart = view.findViewById(R.id.stepNumberChart);
          manager = new CombinedChartManager(stepNumberChart);
         List<Float> barYValues = manager.getBarYAxisValues();
@@ -235,8 +235,8 @@ public class StepNumberChartFragment extends Fragment {
         }
 
         public List<Float> getBarYAxisValues() {
-            NightRunningDatabase helper = ((MainActivity) getActivity()).helper;
-            List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), "测试1", "date('now','localtime','-6 days')");
+            NightRunningDatabase helper =MainActivity.getDatabaseHelper();
+            List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
             if(barYAxisValues.size()!=0){
                 barYAxisValues.remove(barYAxisValues.size()-1);
             }

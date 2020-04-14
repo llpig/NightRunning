@@ -70,6 +70,17 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         return (db.insert(nightRunningDB.userInfoTable.tableName, null, values) == -1 ? false : true);
     }
 
+    //查询
+    public String selectRecordsToUserInfoTable(SQLiteDatabase db, String userName) {
+        String password = null;
+        String whereStr = "UserName=" + userName + ";";
+        Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, new String[]{nightRunningDB.userInfoTable.password}, whereStr, null, null, null, null);
+        while (cursor.moveToNext()) {
+            password = cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.password));
+        }
+        return password;
+    }
+
     //返回创建运动信息表的SQL语句
     private String createMotionInfoTable() {
         String sql = "Create Table MotionInfoTable (" +

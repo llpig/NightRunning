@@ -1,100 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LayoutRegistered"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:fillViewport="true"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/colorAccent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/logo" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <EditText
-            android:id="@+id/EditTextUserName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="用户名"
-            android:textSize="24sp" />
-
-        <EditText
-            android:id="@+id/EditTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="邮箱"
-            android:textSize="24sp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:hint="密码"
-            android:textSize="24sp" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:hint="确认密码"
-            android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:orientation="horizontal">
+            android:background="@color/colorYellow"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="点击图片更换头像"
+                android:textColor="@color/colorOrange" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <EditText
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:hint="验证码"
+                android:id="@+id/EditTextRegUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="用户名"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/EditTextRegEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="邮箱"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/EditTextRegPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="密码"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/EditTextRegCheckPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="确认密码"
+                android:textSize="24sp" />
+
+            //int sex, int age,
+            //double height, double weight, int targetStepNumber, int targetMileage, String avatar
+
+            <RadioGroup
+                android:id="@+id/sexRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="性别:"
+                    android:textSize="24sp" />
+
+                <RadioButton
+                    android:id="@+id/manRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:text="男"
+                    android:textSize="24sp" />
+
+                <RadioButton
+                    android:id="@+id/womenRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="女"
+                    android:textSize="24sp" />
+            </RadioGroup>
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="年龄"
+                android:textSize="24sp" />
+
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="身高"
+                android:textSize="24sp" />
+
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="体重"
+                android:textSize="24sp" />
+
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="目标步数/天"
+                android:textSize="24sp" />
+
+
+            <EditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:hint="目标里程/天"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/EditTextRegVerifyCode"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:hint="验证码"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/ButtonSendVerifyCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="发送验证码"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/ButtonRegistered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="确认注册"
                 android:textSize="24sp" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:id="@+id/ButtonReturnLogin"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="发送验证码"
-                android:textSize="20sp" />
+                android:text="已有账号，返回登录"
+                android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
+</ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="确认注册"
-            android:textSize="24sp" />
-
-        <Button
-            android:id="@+id/ButtonReturnLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="已有账号，返回登录"
-            android:textSize="24sp" />
-    </LinearLayout>
-</LinearLayout>

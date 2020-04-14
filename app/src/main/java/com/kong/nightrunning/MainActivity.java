@@ -1,37 +1,25 @@
 package com.kong.nightrunning;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Process;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private Tool tool = new Tool();
     private TextView mTextViewTitle;
     private Intent serviceIntent;
     private Button mButtonUserAvatar, mButtonSportsShow, mButtonRunning, mButtonSportsCircle;
     public Fragment mLastFragment, mSportsShowFragment, mRunningFragment, mSportsCircleFragment;
-    public NightRunningDatabase helper;
+    private static NightRunningDatabase helper;
     public static String TAG;
     public static String USERNAME;
 
@@ -39,18 +27,15 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        startNightRunningService();
-        initActivity();
+        helper = new NightRunningDatabase(this, "NightRunning", null, 1);
+        //取消App的标题栏
+        getSupportActionBar().hide();
+        getUserLoginInfo();
     }
 
     //初始化Activity
     private void initActivity() {
         TAG = getPackageName();
-        //取消App的标题栏
-        getSupportActionBar().hide();
-        //从文件中读取用户名
-        USERNAME = getSharedPreferences("test1", MODE_PRIVATE).getString("userName", "");
-        helper = new NightRunningDatabase(this, "NightRunning", null, 1);
         findViewAndSetOnClickListener();
         mTextViewTitle = findViewById(R.id.TextViewTitle);
         mSportsShowFragment = new SportsShowFragment();
@@ -62,6 +47,18 @@ public class MainActivity extends AppCompatActivity{
         getSupportFragmentManager().beginTransaction().add(R.id.LayoutContent, mSportsShowFragment).commit();
     }
 
+    //读取用户登录信息
+    private void getUserLoginInfo() {
+        SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
+        USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
+        if(USERNAME==null){
+            tool.startActivityFromIntent(this,UserLoginActivity.class);
+        }else{
+            startNightRunningService();
+            initActivity();
+        }
+    }
+
     //启动服务
     private void startNightRunningService() {
         //启动服务
@@ -69,9 +66,9 @@ public class MainActivity extends AppCompatActivity{
         startService(serviceIntent);
         if (NightRunningSensorEventListener.getTodayAddStepNumber() == -1) {
             stopService(serviceIntent);
-            tool.hintMessage(MainActivity.this, "无可用传感器");
+            tool.showToast(MainActivity.this, "无可用传感器");
         } else {
-            tool.hintMessage(MainActivity.this, "传感器已注册，系统已开始记录步数");
+            tool.showToast(MainActivity.this, "传感器已注册，系统已开始记录步数");
         }
     }
 
@@ -108,13 +105,12 @@ public class MainActivity extends AppCompatActivity{
 
         mButtonSportsCircle = findViewById(R.id.ButtonSportsCircle);
         mButtonSportsCircle.setOnClickListener(onClickListener);
-
     }
 
-    //用户头像点击事件（点击头像进入“个人中心”）
+    //用户头像点击事件（点击头像进入登录）
     private void userAvatarOnClickListener() {
-        tool.jumpActivity(MainActivity.this, PersonalCenterActivity.class);
-        tool.hintMessage(MainActivity.this, "个人中心");
+        //登录
+        tool.startActivityFromIntent(this, UserLoginActivity.class);
     }
 
     //运动展示点击事件
@@ -177,5 +173,9 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    public static NightRunningDatabase getDatabaseHelper(){
+        return helper;
     }
 }

@@ -30,7 +30,6 @@ public class NightRunningService extends Service {
     //数据库
     private NightRunningDatabase helper;
     private SQLiteDatabase db;
-    private SharedPreferences preferences;
     private String userName;
     //广播接收者
     private BroadcastReceiver broadcastReceiver;
@@ -55,11 +54,6 @@ public class NightRunningService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //测试数据（只允许本程序访问）
-        preferences = getSharedPreferences("test1", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("userName", "测试1");
-        editor.commit();
         initService();
     }
 
@@ -67,8 +61,8 @@ public class NightRunningService extends Service {
     private void initService() {
         tool = new Tool();
         nightRunningDB = tool.new NightRunningDB();
-        userName = preferences.getString("userName", "");
-        helper = new NightRunningDatabase(getApplicationContext(), "NightRunning", null, 1);
+        userName = MainActivity.USERNAME;
+        helper = MainActivity.getDatabaseHelper();
         db = helper.getReadableDatabase();
         sensorEventListener = new NightRunningSensorEventListener();
         initRelevantData();
@@ -164,7 +158,7 @@ public class NightRunningService extends Service {
         if (yesterdayDateIsUpdate == false) {
             String date = "date('now','localtime','-1 days')";
             ContentValues values = helper.selectRecordsToMotionInfoTable(db, userName, date);
-            if(values.size()!=0){
+            if (values.size() != 0) {
                 //如果昨天的数据没有正确保存，则重新保存。
                 int yesterdayAddStepNumber = startStepNumber - ((int) values.get(nightRunningDB.motionInfoTable.stepNumber));
                 helper.upDateRecordsToMotionInfoTableNormal(db, userName, date, yesterdayAddStepNumber, 0);
