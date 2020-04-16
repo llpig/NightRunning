@@ -17,11 +17,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/ImageViewRegUserAvatar"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/logo" />
+                android:background="@drawable/logo"
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,7 +32,6 @@
                 android:text="点击图片更换头像"
                 android:textColor="@color/colorOrange" />
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,27 +50,9 @@
                 android:id="@+id/EditTextRegEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:hint="邮箱"
                 android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/EditTextRegPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="密码"
-                android:textSize="24sp" />
-
-            <EditText
-                android:id="@+id/EditTextRegCheckPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="确认密码"
-                android:textSize="24sp" />
-
-            //int sex, int age,
-            //double height, double weight, int targetStepNumber, int targetMileage, String avatar
 
             <RadioGroup
                 android:id="@+id/sexRadioGroup"
@@ -101,25 +84,27 @@
             </RadioGroup>
 
             <EditText
-
+                android:id="@+id/EditTextRegAge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="number"
                 android:hint="年龄"
                 android:textSize="24sp" />
 
 
             <EditText
-
+                android:id="@+id/EditTextRegHeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="number"
                 android:hint="身高"
                 android:textSize="24sp" />
 
 
             <EditText
-
+                android:id="@+id/EditTextRegWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -128,20 +113,39 @@
 
 
             <EditText
-
+                android:id="@+id/EditTextRegTargetStepNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:inputType="number"
                 android:hint="目标步数/天"
                 android:textSize="24sp" />
 
 
             <EditText
-
+                android:id="@+id/EditTextRegTargetMileage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:hint="目标里程/天"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/EditTextRegPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"
+                android:hint="密码"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/EditTextRegCheckPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:inputType="textPassword"
+                android:hint="确认密码"
                 android:textSize="24sp" />
 
             <LinearLayout
