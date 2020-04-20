@@ -47,7 +47,7 @@ public class StepNumberChartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_step_number_chart, container, false);
         stepNumberChart = view.findViewById(R.id.stepNumberChart);
-         manager = new CombinedChartManager(stepNumberChart);
+        manager = new CombinedChartManager(stepNumberChart);
         List<Float> barYValues = manager.getBarYAxisValues();
         List<Float> lineYValues = manager.getLineYAxisValues(barYValues);
         List<String> xAxisValues = manager.getXAxisValues(barYValues.size());
@@ -235,10 +235,10 @@ public class StepNumberChartFragment extends Fragment {
         }
 
         public List<Float> getBarYAxisValues() {
-            NightRunningDatabase helper =MainActivity.getDatabaseHelper();
-            List<Float> barYAxisValues= helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
-            if(barYAxisValues.size()!=0){
-                barYAxisValues.remove(barYAxisValues.size()-1);
+            NightRunningDatabase helper = MainActivity.getDatabaseHelper();
+            List<Float> barYAxisValues = helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
+            if (barYAxisValues.size() != 0) {
+                barYAxisValues.remove(barYAxisValues.size() - 1);
             }
             barYAxisValues.add(new Float(NightRunningSensorEventListener.getTodayAddStepNumber()));
             return barYAxisValues;
@@ -253,7 +253,7 @@ public class StepNumberChartFragment extends Fragment {
             return lineYAXisValues;
         }
 
-        public void drawCombinedChart(){
+        public void drawCombinedChart() {
             CombinedData combinedData = new CombinedData();
             combinedData.setData(getBarData(getBarYAxisValues(), "步数(步)", Color.rgb(128, 0, 255)));
             combinedData.setData(getLineData(getLineYAxisValues(getBarYAxisValues()), "卡路里(百卡)", Color.rgb(255, 128, 0)));

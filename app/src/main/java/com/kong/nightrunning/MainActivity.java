@@ -1,27 +1,33 @@
 package com.kong.nightrunning;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String TAG;
+    private Intent serviceIntent = null;
+    public static String USERNAME;
+    public static String USERAVATAR;
     private Tool tool = new Tool();
     private TextView mTextViewTitle;
-    private Intent serviceIntent;
-    private Button mButtonUserAvatar, mButtonSportsShow, mButtonRunning, mButtonSportsCircle;
-    public Fragment mLastFragment, mSportsShowFragment, mRunningFragment, mSportsCircleFragment;
+    private ImageView mImageViewUserAvatar;
     private static NightRunningDatabase helper;
-    public static String TAG;
-    public static String USERNAME;
+    private Button mButtonSportsShow, mButtonRunning, mButtonPersonalCenter;
+    public Fragment mLastFragment, mSportsShowFragment, mRunningFragment, mPersonalCenterFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
         getUserLoginInfo();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
+        USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
+        USERAVATAR = preferences.getString(UserLoginActivity.AVATAR, null);
+        startNightRunningService();
+        initActivity();
+    }
+
     //初始化Activity
     private void initActivity() {
         TAG = getPackageName();
@@ -40,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         mTextViewTitle = findViewById(R.id.TextViewTitle);
         mSportsShowFragment = new SportsShowFragment();
         mRunningFragment = new RunningFragment();
-        mSportsCircleFragment = new SportsCircleFragment();
+        mPersonalCenterFragment = new PersonalCenterFragment();
         //上一个点击使用的Fragment
         mLastFragment = mSportsShowFragment;
         //将运动展示界面作为App的首页
@@ -51,24 +67,23 @@ public class MainActivity extends AppCompatActivity {
     private void getUserLoginInfo() {
         SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
         USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
-        if(USERNAME==null){
-            tool.startActivityFromIntent(this,UserLoginActivity.class);
-        }else{
-            startNightRunningService();
-            initActivity();
+        if (USERNAME == null) {
+            tool.startActivityFromIntent(this, UserLoginActivity.class);
         }
     }
 
     //启动服务
     private void startNightRunningService() {
         //启动服务
-        serviceIntent = new Intent(MainActivity.this, NightRunningService.class);
-        startService(serviceIntent);
-        if (NightRunningSensorEventListener.getTodayAddStepNumber() == -1) {
-            stopService(serviceIntent);
-            tool.showToast(MainActivity.this, "无可用传感器");
-        } else {
-            tool.showToast(MainActivity.this, "传感器已注册，系统已开始记录步数");
+        if(serviceIntent==null){
+            serviceIntent = new Intent(MainActivity.this, NightRunningService.class);
+            startService(serviceIntent);
+            if (NightRunningSensorEventListener.getTodayAddStepNumber() == -1) {
+                stopService(serviceIntent);
+                tool.showToast(MainActivity.this, "无可用传感器");
+            } else {
+                tool.showToast(MainActivity.this, "传感器已注册，系统已开始记录步数");
+            }
         }
     }
 
@@ -78,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentFragment != mLastFragment) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //隐藏上次点击展示的内容
+            //App从后台重现切入前台后，hide失效。
             fragmentTransaction.hide(mLastFragment);
             //更新上次的Fragment
             mLastFragment = currentFragment;
@@ -94,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
     //查询组件并设置点击事件
     private void findViewAndSetOnClickListener() {
         ViewOnClickListener onClickListener = new ViewOnClickListener();
-        mButtonUserAvatar = findViewById(R.id.ButtonUserAvatar);
-        mButtonUserAvatar.setOnClickListener(onClickListener);
+        mImageViewUserAvatar = findViewById(R.id.ImageViewMainUserAvatar);
+        mImageViewUserAvatar.setOnClickListener(onClickListener);
+        mImageViewUserAvatar.setImageURI(Uri.parse(USERAVATAR));
 
         mButtonSportsShow = findViewById(R.id.ButtonSportsShow);
         mButtonSportsShow.setOnClickListener(onClickListener);
@@ -103,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         mButtonRunning = findViewById(R.id.ButtonRunning);
         mButtonRunning.setOnClickListener(onClickListener);
 
-        mButtonSportsCircle = findViewById(R.id.ButtonSportsCircle);
-        mButtonSportsCircle.setOnClickListener(onClickListener);
+        mButtonPersonalCenter = findViewById(R.id.ButtonSportsCircle);
+        mButtonPersonalCenter.setOnClickListener(onClickListener);
     }
 
     //用户头像点击事件（点击头像进入登录）
@@ -118,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         mTextViewTitle.setText(R.string.sports_show);
         mButtonSportsShow.setBackgroundResource(R.drawable.sports_show_red);
         mButtonRunning.setBackgroundResource(R.drawable.running_black);
-        mButtonSportsCircle.setBackgroundResource(R.drawable.sports_circle_balck);
+        mButtonPersonalCenter.setBackgroundResource(R.drawable.sports_circle_balck);
         fragmentLoadingManager(mSportsShowFragment);
     }
 
@@ -128,17 +145,17 @@ public class MainActivity extends AppCompatActivity {
         mTextViewTitle.setText(R.string.running);
         mButtonSportsShow.setBackgroundResource(R.drawable.sports_show_black);
         mButtonRunning.setBackgroundResource(R.drawable.running_red);
-        mButtonSportsCircle.setBackgroundResource(R.drawable.sports_circle_balck);
+        mButtonPersonalCenter.setBackgroundResource(R.drawable.sports_circle_balck);
         fragmentLoadingManager(mRunningFragment);
     }
 
-    //运圈点击事件
-    private void sportsCircleOnClickListener() {
+    //个人中心点击事件
+    private void personalCenterOnClickListener() {
         mTextViewTitle.setText(R.string.sports_circle);
         mButtonSportsShow.setBackgroundResource(R.drawable.sports_show_black);
         mButtonRunning.setBackgroundResource(R.drawable.running_black);
-        mButtonSportsCircle.setBackgroundResource(R.drawable.sports_circle_red);
-        fragmentLoadingManager(mSportsCircleFragment);
+        mButtonPersonalCenter.setBackgroundResource(R.drawable.sports_circle_red);
+        fragmentLoadingManager(mPersonalCenterFragment);
     }
 
     //组件点击事件监听器
@@ -147,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 //用户头像
-                case R.id.ButtonUserAvatar: {
+                case R.id.ImageViewMainUserAvatar: {
                     userAvatarOnClickListener();
                     break;
                 }
@@ -163,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 //运动圈
                 case R.id.ButtonSportsCircle: {
-                    sportsCircleOnClickListener();
+                    personalCenterOnClickListener();
                     break;
                 }
             }
@@ -175,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public static NightRunningDatabase getDatabaseHelper(){
+
+    public static NightRunningDatabase getDatabaseHelper() {
         return helper;
     }
 }

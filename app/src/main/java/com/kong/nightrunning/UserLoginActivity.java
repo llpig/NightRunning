@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,9 +20,16 @@ public class UserLoginActivity extends AppCompatActivity {
     private TextView mTextViewRegistered, mTextViewForgetPassword;
     private Tool tool;
     private NightRunningDatabase helper;
-    public static String USERINFOFILENAME="LoginInfo";
-    public static String USERNAME="userName";
-    public static String PASSWORD="password";
+    public static String USERINFOFILENAME = "LoginInfo";
+    public static String USERNAME = "userName";
+    public static String PASSWORD = "password";
+    public static String AVATAR = "avatar";
+    public static String AGE="age";
+    public static String HEIGHT="height";
+    public static String WEIGHT="weight";
+    public static String SEX="sex";
+    public static String TARGETMILEAGE="targetMileage";
+    public static String TARGETSTEPNUMBER="targetStepNumber";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +43,7 @@ public class UserLoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         tool = new Tool();
         helper = MainActivity.getDatabaseHelper();
-        tool.showToast(this,"检测到您还尚未登录，已为您跳转到登录界面。");
+        tool.showToast(this, "欢迎进入夜跑APP登录界面");
     }
 
     private void goToRegisteredActivity() {
@@ -61,21 +69,42 @@ public class UserLoginActivity extends AppCompatActivity {
     //登录事件
     private void login() {
         String userName = ((EditText) findViewById(R.id.EditTextLoginUserName)).getText().toString().trim();
-        String password = ((EditText) findViewById(R.id.EditTextLoginPassword)).getText().toString().trim();
+        String password = tool.getMD5Code(((EditText) findViewById(R.id.EditTextLoginPassword)).getText().toString().trim());
+        ContentValues values = helper.selectRecordsToUserInfoTable(helper.getReadableDatabase(), userName);
+        Tool.NightRunningDB nightRunningDB = tool.new NightRunningDB();
+        String checkPassword = values.getAsString(nightRunningDB.userInfoTable.password);
+        String avatarPath = values.getAsString(nightRunningDB.userInfoTable.avatar);
+
+        int age=values.getAsInteger(nightRunningDB.userInfoTable.age).intValue();
+        int height=values.getAsInteger(nightRunningDB.userInfoTable.height).intValue();
+        double weight=values.getAsDouble(nightRunningDB.userInfoTable.weight).doubleValue();
+        boolean sex=values.getAsBoolean(nightRunningDB.userInfoTable.sex).booleanValue();
+        int targetStepNumber=values.getAsInteger(nightRunningDB.userInfoTable.targetStepNumber).intValue();
+        double targetMileage=values.getAsDouble(nightRunningDB.userInfoTable.targetMileage).doubleValue();
+
         if (userName.isEmpty() || password.isEmpty()) {
             tool.showToast(this, "用户名或密码为空");
         } else {
-            if (helper.selectRecordsToUserInfoTable(helper.getReadableDatabase(), userName).equals(password)) {
+            if (password.equals(checkPassword)) {
                 tool.showToast(this, "您已经成功登录");
                 //将信息存入应用的私有文件夹中（用户不需要每次都登录）
                 SharedPreferences preferences = getSharedPreferences(USERINFOFILENAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(USERNAME, userName);
                 editor.putString(PASSWORD, password);
+                editor.putString(AVATAR, avatarPath);
+                editor.putInt(AGE,age);
+                editor.putInt(HEIGHT,height);
+                editor.putFloat(WEIGHT,(float)weight);
+                editor.putBoolean(SEX,sex);
+                editor.putInt(TARGETSTEPNUMBER,targetStepNumber);
+                editor.putFloat(TARGETMILEAGE,(float)targetMileage);
                 editor.commit();
-                this.finish();
+                tool.showToast(this, "登录成功，即将为您跳转到主界面");
+                Log.i("DATA", "userName：" + userName + ",密码：" + password + ",头像：" + avatarPath);
+                tool.startActivityFromIntent(this, MainActivity.class);
             } else {
-                tool.showToast(this, "用户名或者密码错误");
+                tool.showToast(this, "用户名或者密码错误,请重新登录");
             }
         }
     }

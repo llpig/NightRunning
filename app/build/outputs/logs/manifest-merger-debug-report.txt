@@ -85,7 +85,7 @@ ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:5-76
 	android:name
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:25:22-73
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-79
+ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:5-80
 	android:name
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:27:22-77
 application
@@ -107,7 +107,7 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\¿×
 	android:roundIcon
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:34:9-54
 	android:icon
-		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:32:9-43
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:32:9-38
 	android:allowBackup
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:31:9-35
 	android:theme
@@ -123,7 +123,7 @@ ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:38:9-55
 activity#com.kong.nightrunning.MainActivity
 ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:40:9-47:20
 	android:launchMode
-		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:42:13-43
+		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:42:13-44
 	android:name
 		ADDED from E:\KKProject\NightRunning\app\src\main\AndroidManifest.xml:41:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER

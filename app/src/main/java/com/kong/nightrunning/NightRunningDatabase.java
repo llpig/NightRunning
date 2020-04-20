@@ -29,11 +29,6 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         db.execSQL(createMotionInfoTable());
         db.execSQL(createMovementLocusTable());
         db.execSQL(createAchievementTable());
-
-        //测试数据
-        if (insertRecordsToUserInfoTable(db, "测试1", "1111", 0, 32, 175, 55, 3000, 3, "") == false) {
-            Log.v("message", "记录插入失败");
-        }
     }
 
     //返回创建用户信息表的SQL语句
@@ -46,7 +41,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 "[Height] double check(Height>0) Not Null," +
                 "[Weight] double check(Weight>0) Not Null," +
                 "[TargetStepNumber] int check(TargetStepNumber>0) default 0," +
-                "[TargetMileage] int check(TargetMileage>0) default 0," +
+                "[TargetMileage] double check(TargetMileage>0) default 0," +
                 "[Avatar] varchar(255)" +
                 ");";
         return sql;
@@ -55,7 +50,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
 
     //插入记录（用户信息表）将用户信息存储在本地，通过文件查询
     public boolean insertRecordsToUserInfoTable(SQLiteDatabase db, String userName, String password, int sex, int age,
-                                                double height, double weight, int targetStepNumber, int targetMileage, String avatar) {
+                                                double height, double weight, int targetStepNumber, double targetMileage, String avatar) {
         ContentValues values = new ContentValues();
         values.put(nightRunningDB.userInfoTable.userName, userName);
         values.put(nightRunningDB.userInfoTable.password, password);
@@ -71,14 +66,25 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
     }
 
     //查询
-    public String selectRecordsToUserInfoTable(SQLiteDatabase db, String userName) {
-        String password = null;
-        String whereStr = "UserName=" + userName + ";";
-        Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, new String[]{nightRunningDB.userInfoTable.password}, whereStr, null, null, null, null);
+    public ContentValues selectRecordsToUserInfoTable(SQLiteDatabase db, String userName) {
+        ContentValues values = new ContentValues();
+        String whereStr = "UserName=" + "\"" + userName + "\"" + ";";
+        String[] select = new String[]{
+                nightRunningDB.userInfoTable.password,
+                nightRunningDB.userInfoTable.avatar,
+                nightRunningDB.userInfoTable.age,
+                nightRunningDB.userInfoTable.height,
+                nightRunningDB.userInfoTable.weight,
+                nightRunningDB.userInfoTable.sex,
+                nightRunningDB.userInfoTable.targetMileage,
+                nightRunningDB.userInfoTable.targetStepNumber
+        };
+        Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, select, whereStr, null, null, null, null);
         while (cursor.moveToNext()) {
-            password = cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.password));
+            values.put(nightRunningDB.userInfoTable.password, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.password)));
+            values.put(nightRunningDB.userInfoTable.avatar, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.avatar)));
         }
-        return password;
+        return values;
     }
 
     //返回创建运动信息表的SQL语句

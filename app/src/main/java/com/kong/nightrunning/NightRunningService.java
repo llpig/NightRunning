@@ -55,6 +55,7 @@ public class NightRunningService extends Service {
     public void onCreate() {
         super.onCreate();
         initService();
+        Log.i("DATA","服务器初始化");
     }
 
     //初始化服务器
@@ -171,7 +172,6 @@ public class NightRunningService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        startForeground(Tool.MessageType.FOREGROUNDSERVICE.getIndex(), getNotification("前台服务被杀死"));
         stopForeground(Tool.MessageType.FOREGROUNDSERVICE.getIndex());
         closeDatabase();
     }

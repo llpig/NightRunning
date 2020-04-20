@@ -705,7 +705,6 @@ id ButtonRunning
 id ButtonSendVerifyCode
 id ButtonSportsCircle
 id ButtonSportsShow
-id ButtonUserAvatar
 id ButtonUserLogin
 id CTRL
 id EditTextLoginPassword
@@ -721,8 +720,9 @@ id EditTextRegUserName
 id EditTextRegVerifyCode
 id EditTextRegWeight
 id FUNCTION
+id ImageViewMainUserAvatar
+id ImageViewPerUserAvatar
 id ImageViewRegUserAvatar
-id ImageViewUserAvatar
 id LayoutContent
 id LayoutLogin
 id LayoutMainActivity
@@ -730,11 +730,14 @@ id META
 id SHIFT
 id SYM
 id TextViewForgetPassword
-id TextViewLoginStart
+id TextViewHistoryData
+id TextViewPerLoginStart
 id TextViewRegistered
 id TextViewTargetNumber
 id TextViewTitle
 id TextViewTodayNumber
+id TextViewTrainingPlan
+id TextViewUserRoute
 id Top
 id accessibility_action_clickable_span
 id accessibility_custom_action_0

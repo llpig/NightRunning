@@ -183,4 +183,8 @@ public class RunningFragment extends Fragment {
         }
     }
 
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        //super.onSaveInstanceState(outState);
+    }
+
 }

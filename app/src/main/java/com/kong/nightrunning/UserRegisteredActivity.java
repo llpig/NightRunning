@@ -1,9 +1,13 @@
 package com.kong.nightrunning;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -19,6 +23,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRegisteredActivity extends AppCompatActivity {
 
@@ -44,6 +50,7 @@ public class UserRegisteredActivity extends AppCompatActivity {
         helper = MainActivity.getDatabaseHelper();
         getSupportActionBar().hide();
         findViewAndSetOnClickListener();
+        checkPermissions();
         Log.i("DATA", "进入注册界面");
     }
 
@@ -57,6 +64,22 @@ public class UserRegisteredActivity extends AppCompatActivity {
         mImageViewUserAvatar.setOnClickListener(onClickListener);
         mRadioGroupSex = findViewById(R.id.sexRadioGroup);
         mRadioGroupSex.setOnCheckedChangeListener(new OnRadioGroupCheckedChangeListener());
+    }
+
+    public void checkPermissions() {
+        String[] permissions = new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        };
+        List<String> deniedPermissions = new ArrayList<>();
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+                deniedPermissions.add(permission);
+            }
+        }
+        if (deniedPermissions.size() != 0) {
+            ActivityCompat.requestPermissions(this, deniedPermissions.toArray(new String[deniedPermissions.size()]), 0);
+        }
     }
 
     private void getInputInformationSave() {
@@ -79,13 +102,34 @@ public class UserRegisteredActivity extends AppCompatActivity {
         //确认密码
         String checkPassword = tool.getMD5Code(((EditText) findViewById(R.id.EditTextRegCheckPassword)).getText().toString().trim());
 
+
         Log.i("DATA", "用户名:" + userName + ",邮箱:" + email + ",年龄：" + age + ",身高" + height + ",体重:" + weight +
                 "目标步数：" + targetStepNumber + ",目标里程：" + targetMileage + ",密码：" + password + ",确认密码：" + checkPassword + ",头像：" + mUserAvatarPath + ",性别：" + USERSEX);
-        SQLiteDatabase db = helper.getReadableDatabase();
-//        helper.insertRecordsToUserInfoTable(db,userNameText,passwordText);
-        //将数据更新到数据库
+        if (checkData(userName, password, checkPassword)) {
+            //将数据更新到数据库
+            SQLiteDatabase db = helper.getReadableDatabase();
+            if (helper.insertRecordsToUserInfoTable(db, userName, password, USERSEX, age, height, weight, targetStepNumber, targetMileage, mUserAvatarPath)) {
+                tool.showToast(UserRegisteredActivity.this, "您已成功注册即将为您跳转到登录界面");
+                tool.startActivityFromIntent(UserRegisteredActivity.this, UserLoginActivity.class);
+            } else {
+                tool.showToast(UserRegisteredActivity.this, "注册失败，请重新注册");
+            }
+        }
+    }
 
-        tool.startActivityFromIntent(UserRegisteredActivity.this, UserLoginActivity.class);
+    private boolean checkData(String userName, String password, String checkPassword) {
+        boolean bRet = true;
+        String tmp = new String();
+        if (userName == null) {
+            tmp = "用户名为空";
+            bRet = false;
+        }
+        if (!(password.equals(checkPassword))) {
+            tmp = "两次密码输入不一致";
+            bRet = false;
+        }
+        tool.showToast(this, tmp);
+        return bRet;
     }
 
     @Override

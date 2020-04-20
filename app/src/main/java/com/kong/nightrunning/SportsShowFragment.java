@@ -1,5 +1,6 @@
 package com.kong.nightrunning;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -31,6 +32,7 @@ public class SportsShowFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sports_show, container, false);
         findView(view);
+        updateTargetStopNumber();
         return view;
     }
 
@@ -76,8 +78,10 @@ public class SportsShowFragment extends Fragment {
     }
 
     //更新目标步数
-    public void updateTargetStopNumber(int targetNumber) {
-        mTextViewTargetNumber.setText("目标步数:" + String.valueOf(targetNumber));
+    public void updateTargetStopNumber() {
+        SharedPreferences preferences = getActivity().getSharedPreferences(UserLoginActivity.USERINFOFILENAME, getActivity().MODE_PRIVATE);
+        int targetStepNumber = preferences.getInt(UserLoginActivity.TARGETSTEPNUMBER, 10000);
+        mTextViewTargetNumber.setText("目标步数:" + String.valueOf(targetStepNumber));
     }
 
 
@@ -86,6 +90,10 @@ public class SportsShowFragment extends Fragment {
             updateTodayStopNumber(message.arg1);
             chartFragment.manager.drawCombinedChart();
         }
+    }
+
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        //super.onSaveInstanceState(outState);
     }
 
 }

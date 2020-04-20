@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -11,15 +12,16 @@
         android:orientation="vertical">
         <!--用户头像:如果没有登录则点击头像登录，如果用户已经登录点击头像则更换头像-->
         <ImageView
-            android:id="@+id/ImageViewUserAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:id="@+id/ImageViewPerUserAvatar"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:background="@drawable/not_logged_in" />
         <!--登录状态-->
         <TextView
-            android:id="@+id/TextViewLoginStart"
+            android:id="@+id/TextViewPerLoginStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -37,6 +39,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/TextViewHistoryData"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/historical_data"
@@ -45,6 +48,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/TextViewUserRoute"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -54,6 +58,7 @@
             android:textSize="24sp" />
 
         <TextView
+            android:id="@+id/TextViewTrainingPlan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
