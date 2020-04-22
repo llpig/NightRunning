@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,7 +26,8 @@ public class SportsShowFragment extends Fragment {
     private SensorHandler handler;
     private int lastTodayAddStepNumber, todayAddStepNumber;
     private TextView mTextViewTodayNumber, mTextViewTargetNumber;
-    private StepNumberChartFragment chartFragment=null;
+    private StepNumberChartFragment chartFragment = null;
+    private NightRunningDatabase helper = MainActivity.getDatabaseHelper();
 
     @Nullable
     @Override
@@ -63,11 +66,11 @@ public class SportsShowFragment extends Fragment {
         mTextViewTodayNumber = view.findViewById(R.id.TextViewTodayNumber);
         mTextViewTodayNumber.setText(String.valueOf(todayAddStepNumber));
         mTextViewTargetNumber = view.findViewById(R.id.TextViewTargetNumber);
-        if(chartFragment==null){
-            chartFragment=new StepNumberChartFragment();
+        if (chartFragment == null) {
+            chartFragment = new StepNumberChartFragment();
         }
-        FragmentTransaction fragmentTransaction=getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.recentExerciseDataDisplay,chartFragment);
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.recentExerciseDataDisplay, chartFragment);
         fragmentTransaction.commit();
     }
 
@@ -80,7 +83,17 @@ public class SportsShowFragment extends Fragment {
     //更新目标步数
     public void updateTargetStopNumber() {
         SharedPreferences preferences = getActivity().getSharedPreferences(UserLoginActivity.USERINFOFILENAME, getActivity().MODE_PRIVATE);
-        int targetStepNumber = preferences.getInt(UserLoginActivity.TARGETSTEPNUMBER, 10000);
+//        int targetStepNumber = preferences.getInt(UserLoginActivity.TARGETSTEPNUMBER, 10000);
+        int targetStepNumber = 6000;
+        List<Float> stepNumberData = helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
+        if (stepNumberData.size() >= 3) {
+            double completionRate = 0;
+            for (int i = 0; i < stepNumberData.size(); ++i) {
+                completionRate = completionRate + (stepNumberData.get(i) * 1.0 / targetStepNumber);
+            }
+            completionRate = completionRate / stepNumberData.size();
+            targetStepNumber = (int) (targetStepNumber * completionRate);
+        }
         mTextViewTargetNumber.setText("目标步数:" + String.valueOf(targetStepNumber));
     }
 
@@ -92,8 +105,8 @@ public class SportsShowFragment extends Fragment {
         }
     }
 
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        //super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
     }
-
 }

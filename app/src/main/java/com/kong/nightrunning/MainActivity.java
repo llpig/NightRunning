@@ -33,9 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        helper = new NightRunningDatabase(this, "NightRunning", null, 1);
         //取消App的标题栏
         getSupportActionBar().hide();
+        helper = new NightRunningDatabase(this, "NightRunning", null, 1);
+        TAG = getPackageName();
+        initFragment();
         getUserLoginInfo();
     }
 
@@ -45,14 +47,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
         USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
         USERAVATAR = preferences.getString(UserLoginActivity.AVATAR, null);
-        startNightRunningService();
         initActivity();
+        startNightRunningService();
     }
+
 
     //初始化Activity
     private void initActivity() {
-        TAG = getPackageName();
         findViewAndSetOnClickListener();
+    }
+
+    private void initFragment() {
         mTextViewTitle = findViewById(R.id.TextViewTitle);
         mSportsShowFragment = new SportsShowFragment();
         mRunningFragment = new RunningFragment();
@@ -75,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     //启动服务
     private void startNightRunningService() {
         //启动服务
-        if(serviceIntent==null){
+        if (serviceIntent == null) {
             serviceIntent = new Intent(MainActivity.this, NightRunningService.class);
             startService(serviceIntent);
             if (NightRunningSensorEventListener.getTodayAddStepNumber() == -1) {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Fragment管理(添加新的会导致之前的内容被覆盖)
     private void fragmentLoadingManager(Fragment currentFragment) {
-        //如果本次点击内容和上次点击内容相同
+        //如果本次点击内容和上次点击内容不相同
         if (currentFragment != mLastFragment) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //隐藏上次点击展示的内容
@@ -100,8 +105,10 @@ public class MainActivity extends AppCompatActivity {
             //判断该组件是否被加载过
             if (currentFragment.isAdded()) {
                 fragmentTransaction.show(currentFragment);
+                Log.i("DATA", "FragmentManagerShow");
             } else {
                 fragmentTransaction.add(R.id.LayoutContent, currentFragment);
+                Log.i("DATA", "FragmentManagerAdd");
             }
             fragmentTransaction.commit();
         }

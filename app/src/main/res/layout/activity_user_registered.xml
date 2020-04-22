@@ -50,8 +50,8 @@
                 android:id="@+id/EditTextRegEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="邮箱"
+                android:hint="紧急联系人"
+                android:inputType="number"
                 android:textSize="24sp" />
 
             <RadioGroup
@@ -88,8 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:inputType="number"
                 android:hint="年龄"
+                android:inputType="number"
                 android:textSize="24sp" />
 
 
@@ -98,8 +98,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:inputType="number"
                 android:hint="身高"
+                android:inputType="number"
                 android:textSize="24sp" />
 
 
@@ -107,27 +107,9 @@
                 android:id="@+id/EditTextRegWeight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:layout_marginTop="5dp"
                 android:hint="体重"
-                android:textSize="24sp" />
-
-
-            <EditText
-                android:id="@+id/EditTextRegTargetStepNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:inputType="number"
-                android:hint="目标步数/天"
-                android:textSize="24sp" />
-
-
-            <EditText
-                android:id="@+id/EditTextRegTargetMileage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:hint="目标里程/天"
                 android:textSize="24sp" />
 
             <EditText
@@ -135,8 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:inputType="textPassword"
                 android:hint="密码"
+                android:inputType="textPassword"
                 android:textSize="24sp" />
 
             <EditText
@@ -144,31 +126,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:inputType="textPassword"
                 android:hint="确认密码"
+                android:inputType="textPassword"
                 android:textSize="24sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/EditTextRegVerifyCode"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:hint="验证码"
-                    android:textSize="24sp" />
-
-                <Button
-                    android:id="@+id/ButtonSendVerifyCode"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="发送验证码"
-                    android:textSize="20sp" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

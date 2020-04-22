@@ -50,7 +50,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
 
     //插入记录（用户信息表）将用户信息存储在本地，通过文件查询
     public boolean insertRecordsToUserInfoTable(SQLiteDatabase db, String userName, String password, int sex, int age,
-                                                double height, double weight, int targetStepNumber, double targetMileage, String avatar) {
+                                                double height, double weight, int targetStepNumber, String avatar) {
         ContentValues values = new ContentValues();
         values.put(nightRunningDB.userInfoTable.userName, userName);
         values.put(nightRunningDB.userInfoTable.password, password);
@@ -59,7 +59,6 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         values.put(nightRunningDB.userInfoTable.height, height);
         values.put(nightRunningDB.userInfoTable.weight, weight);
         values.put(nightRunningDB.userInfoTable.targetStepNumber, targetStepNumber);
-        values.put(nightRunningDB.userInfoTable.targetMileage, targetMileage);
         values.put(nightRunningDB.userInfoTable.avatar, avatar);
         //如果结果返回-1，则说明插入失败
         return (db.insert(nightRunningDB.userInfoTable.tableName, null, values) == -1 ? false : true);
@@ -76,13 +75,17 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 nightRunningDB.userInfoTable.height,
                 nightRunningDB.userInfoTable.weight,
                 nightRunningDB.userInfoTable.sex,
-                nightRunningDB.userInfoTable.targetMileage,
                 nightRunningDB.userInfoTable.targetStepNumber
         };
         Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, select, whereStr, null, null, null, null);
         while (cursor.moveToNext()) {
             values.put(nightRunningDB.userInfoTable.password, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.password)));
             values.put(nightRunningDB.userInfoTable.avatar, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.avatar)));
+            values.put(nightRunningDB.userInfoTable.age, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.age)));
+            values.put(nightRunningDB.userInfoTable.height, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.height)));
+            values.put(nightRunningDB.userInfoTable.weight, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.weight)));
+            values.put(nightRunningDB.userInfoTable.sex, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.sex)));
+            values.put(nightRunningDB.userInfoTable.targetStepNumber, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.targetStepNumber)));
         }
         return values;
     }

@@ -37,6 +37,6 @@ public class PersonalCenterFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        //super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
     }
 }

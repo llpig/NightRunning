@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,11 +51,19 @@ public class RunningFragment extends Fragment {
     private static int DRAW_MAP_PATH_LINE_WIDTH = 10;
     public static int PERMISSION_REQUEST_CODE = 10;
     public static boolean PERMISSION_FLAG = false;
+    private static int RUNNINGFLAG = 0;
+    private Button mButtonRunningFlag;
+    private TextView mTextViewRunningTime;
+    private TextView mTextViewRunningSpeed;
+    private DrawPathTimerTask drawPathTimerTask;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_running, container, false);
+        mButtonRunningFlag = view.findViewById(R.id.ButtonRunningFlag);
+        mTextViewRunningTime = view.findViewById(R.id.TextViewRunningTime);
+        mTextViewRunningSpeed = view.findViewById(R.id.TextViewRunningSpeed);
         MapView mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mMap = mapView.getMap();
@@ -71,9 +81,7 @@ public class RunningFragment extends Fragment {
         mMapLocationClient.setLocationListener(new MapLocationListener());
         mMapLocationClient.stopLocation();
         mMapLocationClient.startLocation();
-        //开启定时器
-        mDrawTimer = new Timer();
-        mDrawTimer.schedule(new DrawPathTimerTask(), DRAW_MAP_PATH_PERIOD, DRAW_MAP_PATH_PERIOD);
+        mButtonRunningFlag.setOnClickListener(new ButtonRunningOnClickListener());
     }
 
     private void initAMap() {
@@ -88,6 +96,7 @@ public class RunningFragment extends Fragment {
         mMap.setMyLocationEnabled(true);
         //地图缩放显示级别为17（0-19，数值越大越详细）
         mMap.moveCamera(CameraUpdateFactory.zoomTo(MAP_ZOOM_LEVEL));
+
     }
 
 
@@ -120,7 +129,7 @@ public class RunningFragment extends Fragment {
             if (mLatLngs.size() > 0) {
                 mMap.addPolyline(getPolylineOptions(mLatLngs));
                 //将数据保存到文件中
-                Tool.saveRunningPathDate(getFileName(), mLatLngs);
+                //Tool.saveRunningPathDate(getFileName(), mLatLngs);
                 //清理数据并保存最后一个，和下次数据连接使用
                 LatLng tmpLaglng = mLatLngs.get(mLatLngs.size() - 1);
                 mLatLngs.clear();
@@ -183,8 +192,32 @@ public class RunningFragment extends Fragment {
         }
     }
 
+    private class ButtonRunningOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.ButtonRunningFlag: {
+                    if (RUNNINGFLAG == 0) {
+                        //更换图标并启动定期，开始定时
+                        mButtonRunningFlag.setBackgroundResource(R.drawable.stop_running);
+                        drawPathTimerTask = new DrawPathTimerTask();
+                        mDrawTimer = new Timer();
+                        mDrawTimer.schedule(drawPathTimerTask, DRAW_MAP_PATH_PERIOD, DRAW_MAP_PATH_PERIOD);
+                    } else {
+                        mButtonRunningFlag.setBackgroundResource(R.drawable.start_running);
+                        mDrawTimer.cancel();
+                    }
+                    RUNNINGFLAG = 1 - RUNNINGFLAG;
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        //super.onSaveInstanceState(outState);
+//        super.onSaveInstanceState(outState);
     }
 
 }

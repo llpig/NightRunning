@@ -51,7 +51,6 @@ public class UserRegisteredActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         findViewAndSetOnClickListener();
         checkPermissions();
-        Log.i("DATA", "进入注册界面");
     }
 
     private void findViewAndSetOnClickListener() {
@@ -92,23 +91,16 @@ public class UserRegisteredActivity extends AppCompatActivity {
         //身高
         int height = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegHeight)).getText().toString().trim());
         //体重
-        double weight = Double.parseDouble(((EditText) findViewById(R.id.EditTextRegWeight)).getText().toString().trim());
-        //目标步数
-        int targetStepNumber = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegTargetStepNumber)).getText().toString().trim());
-        //目标里程
-        double targetMileage = Double.parseDouble(((EditText) findViewById(R.id.EditTextRegTargetMileage)).getText().toString().trim());
+        int weight = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegWeight)).getText().toString().trim());
         //密码
         String password = tool.getMD5Code(((EditText) findViewById(R.id.EditTextRegPassword)).getText().toString().trim());
         //确认密码
         String checkPassword = tool.getMD5Code(((EditText) findViewById(R.id.EditTextRegCheckPassword)).getText().toString().trim());
-
-
-        Log.i("DATA", "用户名:" + userName + ",邮箱:" + email + ",年龄：" + age + ",身高" + height + ",体重:" + weight +
-                "目标步数：" + targetStepNumber + ",目标里程：" + targetMileage + ",密码：" + password + ",确认密码：" + checkPassword + ",头像：" + mUserAvatarPath + ",性别：" + USERSEX);
+        int targetStepNumber=6000;
         if (checkData(userName, password, checkPassword)) {
             //将数据更新到数据库
             SQLiteDatabase db = helper.getReadableDatabase();
-            if (helper.insertRecordsToUserInfoTable(db, userName, password, USERSEX, age, height, weight, targetStepNumber, targetMileage, mUserAvatarPath)) {
+            if (helper.insertRecordsToUserInfoTable(db, userName, password, USERSEX, age, height, weight, targetStepNumber, mUserAvatarPath)) {
                 tool.showToast(UserRegisteredActivity.this, "您已成功注册即将为您跳转到登录界面");
                 tool.startActivityFromIntent(UserRegisteredActivity.this, UserLoginActivity.class);
             } else {

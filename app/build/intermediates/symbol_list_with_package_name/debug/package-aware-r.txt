@@ -691,6 +691,8 @@ drawable sports_circle_balck
 drawable sports_circle_red
 drawable sports_show_black
 drawable sports_show_red
+drawable start_running
+drawable stop_running
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 drawable training_plan
@@ -702,7 +704,7 @@ id ButtonQQAvatar
 id ButtonRegistered
 id ButtonReturnLogin
 id ButtonRunning
-id ButtonSendVerifyCode
+id ButtonRunningFlag
 id ButtonSportsCircle
 id ButtonSportsShow
 id ButtonUserLogin
@@ -714,10 +716,7 @@ id EditTextRegCheckPassword
 id EditTextRegEmail
 id EditTextRegHeight
 id EditTextRegPassword
-id EditTextRegTargetMileage
-id EditTextRegTargetStepNumber
 id EditTextRegUserName
-id EditTextRegVerifyCode
 id EditTextRegWeight
 id FUNCTION
 id ImageViewMainUserAvatar
@@ -733,6 +732,8 @@ id TextViewForgetPassword
 id TextViewHistoryData
 id TextViewPerLoginStart
 id TextViewRegistered
+id TextViewRunningSpeed
+id TextViewRunningTime
 id TextViewTargetNumber
 id TextViewTitle
 id TextViewTodayNumber
