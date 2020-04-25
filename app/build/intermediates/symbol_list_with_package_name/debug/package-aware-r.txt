@@ -967,6 +967,7 @@ layout activity_user_login
 layout activity_user_registered
 layout custom_dialog
 layout fragment_personal_center
+layout fragment_personal_center_info_show
 layout fragment_running
 layout fragment_sports_show
 layout fragment_step_number_chart
