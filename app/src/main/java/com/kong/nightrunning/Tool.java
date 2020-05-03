@@ -3,33 +3,33 @@ package com.kong.nightrunning;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.TabHost;
 import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.amap.api.maps.model.LatLng;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 //工具类
 public class Tool {
     Intent intent = new Intent();
     Toast toast;
+    private NightRunningDatabase helper;
     private static String packName = "com.kong.nightrunning";
+
+    public NightRunningDatabase getRunningDatabase(Context currentContext) {
+        if (helper == null) {
+            helper = new NightRunningDatabase(currentContext, "NightRunning", null, 1);
+        }
+        return helper;
+    }
 
     //消息类型
     public static enum MessageType {
@@ -43,6 +43,57 @@ public class Tool {
         public int getIndex() {
             return index;
         }
+    }
+
+    public String currentSystemTime() {
+        Date date = new Date();
+        return new SimpleDateFormat("HH:mm:ss").format(date);
+    }
+
+    public String secondsConversion(long second) {
+        //将秒转化为时：分：秒
+        long hours, minutes;
+        hours = second / 3600;//转换小时数
+        second = second % 3600;//剩余秒数
+        minutes = second / 60;//转换分钟
+        second = second % 60;//剩余秒数
+        String time = "";
+        if (hours < 10) {
+            time += "0";
+        }
+        time += String.valueOf(hours) + ":";
+        if (minutes < 10) {
+            time += "0";
+        }
+        time += String.valueOf(minutes) + ":";
+        if (second < 10) {
+            time += "0";
+        }
+        time += String.valueOf(second)+":";
+        return time;
+    }
+
+    public double getCalories(float weight, float mileage) {
+        return (weight * mileage * 1.036) / 100;
+    }
+
+    public double getCalories(float stepNumber, float weight, int height, int age, boolean sex) {
+        return getCalories(weight, getMileage((int) stepNumber, height, age, sex));
+    }
+
+    public float getMileage(float stepNumber, int height, int age, boolean sex) {
+        float k = 0.4f;
+        //女性年龄大于60
+        if (sex) {
+            k = 0.39f;
+            if (sex && age > 60) {
+                k = 0.37f;
+            }
+        }
+        if (!sex && age > 60) {
+            k = 0.385f;
+        }
+        return stepNumber * (height / 100.0f * k);
     }
 
     //自定义广播
@@ -153,7 +204,7 @@ public class Tool {
         }
 
         public class MotionInfoTable {
-            String tableName = "MotionInfoTable", userName = "UserName", date = "Date", runningStartTime = "RunningStartTime", runningFinishTime = "RunningFinishTime", stepNumber = "StepNumber", mileage = "Mileage", equipmentInfo = "EquipmentInfo";
+            String tableName = "MotionInfoTable", userName = "UserName", date = "Date", runningTime = "RunningTime", stepNumber = "StepNumber", mileage = "Mileage", equipmentInfo = "EquipmentInfo";
         }
 
         public class MovementLocusTable {
@@ -164,4 +215,7 @@ public class Tool {
             String tableName = "AchievementTable", userName = "UserName", achievement = "Achievement";
         }
     }
+
+    //计时器
+
 }

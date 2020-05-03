@@ -47,7 +47,7 @@ public class UserRegisteredActivity extends AppCompatActivity {
 
     public void initActivity() {
         tool = new Tool();
-        helper = MainActivity.getDatabaseHelper();
+        helper =tool.getRunningDatabase(this);
         getSupportActionBar().hide();
         findViewAndSetOnClickListener();
         checkPermissions();
@@ -85,7 +85,7 @@ public class UserRegisteredActivity extends AppCompatActivity {
         //用户名
         String userName = ((EditText) findViewById(R.id.EditTextRegUserName)).getText().toString().trim();
         //邮箱
-        String email = ((EditText) findViewById(R.id.EditTextRegEmail)).getText().toString().trim();
+        String email = ((EditText) findViewById(R.id.EditTextRegEmergencyContact)).getText().toString().trim();
         //年龄
         int age = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegAge)).getText().toString().trim());
         //身高

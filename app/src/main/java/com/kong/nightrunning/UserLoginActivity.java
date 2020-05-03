@@ -28,7 +28,6 @@ public class UserLoginActivity extends AppCompatActivity {
     public static String HEIGHT="height";
     public static String WEIGHT="weight";
     public static String SEX="sex";
-    public static String TARGETMILEAGE="targetMileage";
     public static String TARGETSTEPNUMBER="targetStepNumber";
 
     @Override
@@ -42,7 +41,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private void initActivity() {
         getSupportActionBar().hide();
         tool = new Tool();
-        helper = MainActivity.getDatabaseHelper();
+        helper=tool.getRunningDatabase(this);
         tool.showToast(this, "欢迎进入夜跑APP登录界面");
     }
 
@@ -80,7 +79,6 @@ public class UserLoginActivity extends AppCompatActivity {
         double weight=values.getAsDouble(nightRunningDB.userInfoTable.weight).doubleValue();
         boolean sex=values.getAsBoolean(nightRunningDB.userInfoTable.sex).booleanValue();
         int targetStepNumber=values.getAsInteger(nightRunningDB.userInfoTable.targetStepNumber).intValue();
-        double targetMileage=values.getAsDouble(nightRunningDB.userInfoTable.targetMileage).doubleValue();
 
         if (userName.isEmpty() || password.isEmpty()) {
             tool.showToast(this, "用户名或密码为空");
@@ -98,7 +96,6 @@ public class UserLoginActivity extends AppCompatActivity {
                 editor.putFloat(WEIGHT,(float)weight);
                 editor.putBoolean(SEX,sex);
                 editor.putInt(TARGETSTEPNUMBER,targetStepNumber);
-                editor.putFloat(TARGETMILEAGE,(float)targetMileage);
                 editor.commit();
                 tool.showToast(this, "登录成功，即将为您跳转到主界面");
                 Log.i("DATA", "userName：" + userName + ",密码：" + password + ",头像：" + avatarPath);

@@ -41,7 +41,6 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 "[Height] double check(Height>0) Not Null," +
                 "[Weight] double check(Weight>0) Not Null," +
                 "[TargetStepNumber] int check(TargetStepNumber>0) default 0," +
-                "[TargetMileage] double check(TargetMileage>0) default 0," +
                 "[Avatar] varchar(255)" +
                 ");";
         return sql;
@@ -97,8 +96,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 "[Date]                date Not Null DEFAULT (date('now','localtime'))," +
                 "[StepNumber]          int Not Null default 0," +
                 "[Mileage]             double default 0," +
-                "[RunningStartTime]    time," +
-                "[RunningFinishTime]   time," +
+                "[RunningTime]         long default 0," +
                 "[EquipmentInfo]       boolean Not Null default 0," +
                 "PRIMARY KEY (UserName,Date)," +
                 "FOREIGN KEY (UserName) REFERENCES UserInfoTable(UserName)" +
@@ -121,8 +119,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         String[] select = new String[]{
                 nightRunningDB.motionInfoTable.stepNumber,
                 nightRunningDB.motionInfoTable.mileage,
-                nightRunningDB.motionInfoTable.runningStartTime,
-                nightRunningDB.motionInfoTable.runningFinishTime,
+                nightRunningDB.motionInfoTable.runningTime,
                 nightRunningDB.motionInfoTable.equipmentInfo};
         Cursor cursor = db.query(nightRunningDB.motionInfoTable.tableName, select, whereStr, null, null, null, null);
         //返回查询到的内容
@@ -130,8 +127,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
 
             values.put(nightRunningDB.motionInfoTable.stepNumber, cursor.getInt(cursor.getColumnIndex(nightRunningDB.motionInfoTable.stepNumber)));
             values.put(nightRunningDB.motionInfoTable.mileage, cursor.getDouble(cursor.getColumnIndex(nightRunningDB.motionInfoTable.mileage)));
-            values.put(nightRunningDB.motionInfoTable.runningStartTime, cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.runningStartTime)));
-            values.put(nightRunningDB.motionInfoTable.runningFinishTime, cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.runningFinishTime)));
+            values.put(nightRunningDB.motionInfoTable.runningTime, cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.runningTime)));
             values.put(nightRunningDB.motionInfoTable.equipmentInfo, cursor.getInt(cursor.getColumnIndex(nightRunningDB.motionInfoTable.equipmentInfo)));
         }
         return values;
@@ -150,16 +146,11 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
 
     //更新记录(运行信息表,跑步)
     public boolean upDateRecordsToMotionInfoTableRunning(SQLiteDatabase db, String userName, String date,
-                                                         double mileage, String runningStartTime, String runningFinishTime) {
+                                                         double mileage, long runningTime) {
         String whereStr = nightRunningDB.motionInfoTable.date + "=(select(" + date + ")) and " + nightRunningDB.motionInfoTable.userName + "=\"" + userName + "\"";
         ContentValues values = new ContentValues();
         values.put(nightRunningDB.motionInfoTable.mileage, mileage);
-        if (!runningStartTime.equals("null")) {
-            values.put(nightRunningDB.motionInfoTable.runningStartTime, runningStartTime);
-        }
-        if (!runningFinishTime.equals("null")) {
-            values.put(nightRunningDB.motionInfoTable.runningFinishTime, runningFinishTime);
-        }
+        values.put(nightRunningDB.motionInfoTable.runningTime, runningTime);
         return (db.update(nightRunningDB.motionInfoTable.tableName, values, whereStr, null) != 1 ? false : true);
     }
 

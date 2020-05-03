@@ -33,7 +33,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:layout_weight="2"
         android:orientation="vertical">
@@ -44,17 +43,8 @@
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/historical_data"
             android:drawablePadding="10dp"
+            android:layout_marginTop="30dp"
             android:text="@string/historical_data"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/TextViewUserRoute"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/user_route"
-            android:drawablePadding="20dp"
-            android:text="@string/user_route"
             android:textSize="24sp" />
 
         <TextView
@@ -66,5 +56,16 @@
             android:drawablePadding="10dp"
             android:text="@string/training_plan"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/TextViewChangeContacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/change_contacts"
+            android:drawablePadding="10dp"
+            android:text="更换紧急联系人"
+            android:textSize="24sp" />
+
     </LinearLayout>
 </LinearLayout>

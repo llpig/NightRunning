@@ -19,8 +19,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static String TAG;
     private Intent serviceIntent = null;
-    public static String USERNAME;
-    public static String USERAVATAR;
+    public static String USERNAME, USERAVATAR;
+    public static int USERHEIGHT, USERAGE;
+    public static boolean USERSEX;
+    public static float USERWEIGHT;
     private Tool tool = new Tool();
     private TextView mTextViewTitle;
     private ImageView mImageViewUserAvatar;
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
+        USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
+        USERAVATAR = preferences.getString(UserLoginActivity.AVATAR, null);
+        USERHEIGHT = preferences.getInt(UserLoginActivity.HEIGHT, 160);
+        USERWEIGHT = preferences.getFloat(UserLoginActivity.WEIGHT, 50);
+        USERAGE = preferences.getInt(UserLoginActivity.AGE, 18);
+        USERSEX = preferences.getBoolean(UserLoginActivity.SEX, false);
         setContentView(R.layout.activity_main);
         //取消App的标题栏
         getSupportActionBar().hide();
@@ -44,9 +53,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
-        USERNAME = preferences.getString(UserLoginActivity.USERNAME, null);
-        USERAVATAR = preferences.getString(UserLoginActivity.AVATAR, null);
+
         initActivity();
         startNightRunningService();
     }
@@ -198,7 +205,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
     public static NightRunningDatabase getDatabaseHelper() {
         return helper;

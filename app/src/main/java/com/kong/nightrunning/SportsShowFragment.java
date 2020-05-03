@@ -4,12 +4,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +26,8 @@ public class SportsShowFragment extends Fragment {
     private TextView mTextViewTodayNumber, mTextViewTargetNumber;
     private StepNumberChartFragment chartFragment = null;
     private NightRunningDatabase helper = MainActivity.getDatabaseHelper();
+    private static String targetStepNumberKey = "USERTARGETSTEPNUMNER";
+    public static int todayTargetStepNumber;
 
     @Nullable
     @Override
@@ -74,7 +74,6 @@ public class SportsShowFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-
     //更新今日步数
     public void updateTodayStopNumber(int stopNumber) {
         mTextViewTodayNumber.setText(String.valueOf(stopNumber));
@@ -83,18 +82,8 @@ public class SportsShowFragment extends Fragment {
     //更新目标步数
     public void updateTargetStopNumber() {
         SharedPreferences preferences = getActivity().getSharedPreferences(UserLoginActivity.USERINFOFILENAME, getActivity().MODE_PRIVATE);
-//        int targetStepNumber = preferences.getInt(UserLoginActivity.TARGETSTEPNUMBER, 10000);
-        int targetStepNumber = 6000;
-        List<Float> stepNumberData = helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
-        if (stepNumberData.size() >= 3) {
-            double completionRate = 0;
-            for (int i = 0; i < stepNumberData.size(); ++i) {
-                completionRate = completionRate + (stepNumberData.get(i) * 1.0 / targetStepNumber);
-            }
-            completionRate = completionRate / stepNumberData.size();
-            targetStepNumber = (int) (targetStepNumber * completionRate);
-        }
-        mTextViewTargetNumber.setText("目标步数:" + String.valueOf(targetStepNumber));
+        todayTargetStepNumber = preferences.getInt(targetStepNumberKey, 6000);
+        mTextViewTargetNumber.setText("目标步数:" + String.valueOf(todayTargetStepNumber));
     }
 
 
@@ -107,6 +96,5 @@ public class SportsShowFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
     }
 }

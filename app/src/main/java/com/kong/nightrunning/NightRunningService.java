@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,7 +56,7 @@ public class NightRunningService extends Service {
     public void onCreate() {
         super.onCreate();
         initService();
-        Log.i("DATA","服务器初始化");
+        Log.i("DATA", "服务器初始化");
     }
 
     //初始化服务器
@@ -153,6 +154,20 @@ public class NightRunningService extends Service {
         return builder.getNotification();
     }
 
+    private String getTodayTargetStepNumber() {
+        int todayTargetStepNumber = 6000;
+        List<Float> stepNumberData = helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
+        if (stepNumberData.size() >= 3) {
+            double completionRate = 0;
+            for (int i = 0; i < stepNumberData.size(); ++i) {
+                completionRate = completionRate + (stepNumberData.get(i) * 1.0 / todayTargetStepNumber);
+            }
+            completionRate = completionRate / stepNumberData.size();
+            todayTargetStepNumber = (int) (todayTargetStepNumber * completionRate);
+        }
+        return String.valueOf(todayTargetStepNumber);
+    }
+
     //计步器传感器记录记录今日起始步数
     public void sensorUpdateData(int startStepNumber) {
         //该方法只有计步器传感器才会调用
@@ -163,8 +178,8 @@ public class NightRunningService extends Service {
                 //如果昨天的数据没有正确保存，则重新保存。
                 int yesterdayAddStepNumber = startStepNumber - ((int) values.get(nightRunningDB.motionInfoTable.stepNumber));
                 helper.upDateRecordsToMotionInfoTableNormal(db, userName, date, yesterdayAddStepNumber, 0);
+                getTodayTargetStepNumber();
             }
-
         }
         helper.upDateRecordsToMotionInfoTableNormal(db, userName, "date('now','localtime')", startStepNumber, 0);
     }
@@ -217,10 +232,14 @@ public class NightRunningService extends Service {
                         helper.insertRecordsToMotionInfoTable(db, userName);
                         //重新对数据进行初始化
                         initRelevantData();
+                        getTodayTargetStepNumber();
                     }
                 }
             }
         }
+
+
+
     }
 
 }

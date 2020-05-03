@@ -12,16 +12,20 @@
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\fragment_sports_show.xml"
     },
     {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
-    },
-    {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_training_plan.png.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable-v24\\training_plan.png"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable_user_avatar.png.flat",
@@ -46,10 +50,6 @@
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable_not_logged_in.png.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable\\not_logged_in.png"
-    },
-    {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable_training_plan.png.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable\\training_plan.png"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable_add_route.png.flat",
@@ -86,6 +86,10 @@
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_change_contacts.png.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable-v24\\change_contacts.png"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
@@ -128,8 +132,8 @@
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable_historical_data.png.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable\\historical_data.png"
+        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_historical_data.png.flat",
+        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\drawable-v24\\historical_data.png"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_personal_center.xml.flat",
@@ -138,10 +142,6 @@
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_user_registered.xml.flat",
         "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\activity_user_registered.xml"
-    },
-    {
-        "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_personal_center_info_show.xml.flat",
-        "source": "E:\\KKProject\\NightRunning\\app\\src\\main\\res\\layout\\fragment_personal_center_info_show.xml"
     },
     {
         "merged": "E:\\KKProject\\NightRunning\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_running.xml.flat",

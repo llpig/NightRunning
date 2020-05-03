@@ -47,7 +47,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/EditTextRegEmail"
+                android:id="@+id/EditTextRegEmergencyContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="紧急联系人"

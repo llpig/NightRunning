@@ -666,6 +666,7 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable change_contacts
 drawable historical_data
 drawable ic_launcher_background
 drawable ic_launcher_foreground
@@ -713,7 +714,7 @@ id EditTextLoginPassword
 id EditTextLoginUserName
 id EditTextRegAge
 id EditTextRegCheckPassword
-id EditTextRegEmail
+id EditTextRegEmergencyContact
 id EditTextRegHeight
 id EditTextRegPassword
 id EditTextRegUserName
@@ -728,6 +729,7 @@ id LayoutMainActivity
 id META
 id SHIFT
 id SYM
+id TextViewChangeContacts
 id TextViewForgetPassword
 id TextViewHistoryData
 id TextViewPerLoginStart
@@ -738,7 +740,6 @@ id TextViewTargetNumber
 id TextViewTitle
 id TextViewTodayNumber
 id TextViewTrainingPlan
-id TextViewUserRoute
 id Top
 id accessibility_action_clickable_span
 id accessibility_custom_action_0
@@ -967,7 +968,6 @@ layout activity_user_login
 layout activity_user_registered
 layout custom_dialog
 layout fragment_personal_center
-layout fragment_personal_center_info_show
 layout fragment_running
 layout fragment_sports_show
 layout fragment_step_number_chart
@@ -1026,7 +1026,6 @@ string training_plan
 string user_login_button_text
 string user_login_password_text
 string user_login_username_text
-string user_route
 style AlertDialog_AppCompat
 style AlertDialog_AppCompat_Light
 style Animation_AppCompat_Dialog
