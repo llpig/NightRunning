@@ -25,8 +25,6 @@ public class SportsShowFragment extends Fragment {
     private int lastTodayAddStepNumber, todayAddStepNumber;
     private TextView mTextViewTodayNumber, mTextViewTargetNumber;
     private StepNumberChartFragment chartFragment = null;
-    private NightRunningDatabase helper = MainActivity.getDatabaseHelper();
-    private static String targetStepNumberKey = "USERTARGETSTEPNUMNER";
     public static int todayTargetStepNumber;
 
     @Nullable
@@ -82,7 +80,7 @@ public class SportsShowFragment extends Fragment {
     //更新目标步数
     public void updateTargetStopNumber() {
         SharedPreferences preferences = getActivity().getSharedPreferences(UserLoginActivity.USERINFOFILENAME, getActivity().MODE_PRIVATE);
-        todayTargetStepNumber = preferences.getInt(targetStepNumberKey, 6000);
+        todayTargetStepNumber = preferences.getInt(NightRunningService.targetStepNumberKey, 6000);
         mTextViewTargetNumber.setText("目标步数:" + String.valueOf(todayTargetStepNumber));
     }
 

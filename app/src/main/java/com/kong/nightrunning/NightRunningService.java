@@ -44,6 +44,7 @@ public class NightRunningService extends Service {
     private boolean yesterdayDateIsUpdate = true;
 
     NightRunningSensorEventListener sensorEventListener;
+    public static String targetStepNumberKey = "USERTARGETSTEPNUMNER";
 
     @Nullable
     @Override
@@ -154,7 +155,7 @@ public class NightRunningService extends Service {
         return builder.getNotification();
     }
 
-    private String getTodayTargetStepNumber() {
+    private void getTodayTargetStepNumber() {
         int todayTargetStepNumber = 6000;
         List<Float> stepNumberData = helper.selectRecentTimeStepNumber(helper.getReadableDatabase(), MainActivity.USERNAME, "date('now','localtime','-6 days')");
         if (stepNumberData.size() >= 3) {
@@ -165,7 +166,9 @@ public class NightRunningService extends Service {
             completionRate = completionRate / stepNumberData.size();
             todayTargetStepNumber = (int) (todayTargetStepNumber * completionRate);
         }
-        return String.valueOf(todayTargetStepNumber);
+        SharedPreferences preferences = getSharedPreferences(UserLoginActivity.USERINFOFILENAME, MODE_PRIVATE);
+        preferences.edit().putInt(targetStepNumberKey, todayTargetStepNumber);
+        preferences.edit().commit();
     }
 
     //计步器传感器记录记录今日起始步数
@@ -237,7 +240,6 @@ public class NightRunningService extends Service {
                 }
             }
         }
-
 
 
     }

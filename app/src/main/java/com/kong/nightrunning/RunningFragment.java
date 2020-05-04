@@ -1,12 +1,15 @@
 package com.kong.nightrunning;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +72,13 @@ public class RunningFragment extends Fragment {
     private long currentRunningTime;
     private String currentCity = null;
     private LocalWeatherLive mWeatherLive;
+    private NightRunningDatabase helper;
+    private static float SAFETYDISTANCE = 7.0f;
+    private static String SAFETYPHONE;
+    private AMapLocation currentAMapLocation;
+    private Tool.SafetySMS safetySMS;
+    private static int SAFETYTIME = 180;
+    private PowerManager.WakeLock wakeLock;
 
 
     @Nullable
@@ -91,7 +101,10 @@ public class RunningFragment extends Fragment {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WAKE_LOCK
         };
         List<String> deniedPermissions = new ArrayList<>();
         for (String permission : permissions) {
@@ -104,8 +117,14 @@ public class RunningFragment extends Fragment {
         }
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     private void initRunningFragment() {
         checkPermissions();
+        helper = tool.getRunningDatabase(getActivity());
+        SAFETYPHONE = helper.selectEmergencyContact(helper.getReadableDatabase(), MainActivity.USERNAME).trim();
+        safetySMS = tool.new SafetySMS(SAFETYPHONE);
+        PowerManager powerManager = (PowerManager) getActivity().getSystemService(getActivity().POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "WAKELOCK");
         mapLocationListener = new MapLocationListener();
         mMapLocationClient = new AMapLocationClient(getActivity());
         mButtonRunningFlag.setOnClickListener(new ButtonRunningOnClickListener());
@@ -143,7 +162,6 @@ public class RunningFragment extends Fragment {
         mMapLocationClient.stopLocation();
         mMapLocationClient.startLocation();
     }
-
 
     private void getWeatherInfo() {
         WeatherSearchQuery mquery = new WeatherSearchQuery(currentCity, WeatherSearchQuery.WEATHER_TYPE_LIVE);
@@ -187,6 +205,10 @@ public class RunningFragment extends Fragment {
                 //更换图标并启动定期，开始定时
                 mButtonRunningFlag.setBackgroundResource(R.drawable.stop_running);
                 RUNNINGFLAG = 1 - RUNNINGFLAG;
+//                if (judgmentTime()) {
+//                    safetySMS.sendSMS(currentAMapLocation, tool.currentSystemTime() + "外出跑步");
+//                }
+                wakeLock.acquire();
                 final TimingHandler handler = new TimingHandler();
                 TimerTask timerTask = new TimerTask() {
                     @Override
@@ -212,15 +234,24 @@ public class RunningFragment extends Fragment {
         builder.show();
     }
 
+    private boolean judgmentTime() {
+        boolean bRet = false;
+        String currentTime = tool.currentSystemTime();
+        int remainingHour = Integer.parseInt(PersonalCenterFragment.TRAININGLATESTTIME.substring(0, 2)) - Integer.parseInt(currentTime.substring(0, 2));
+        int remainingMinute = Integer.parseInt(PersonalCenterFragment.TRAININGLATESTTIME.substring(3, 5)) - Integer.parseInt(currentTime.substring(3, 5));
+        if (remainingHour < 0 || (remainingHour == 0 && remainingMinute <= 0)) {
+            bRet = true;
+        }
+        return bRet;
+    }
+
     private String getStartRunningHintMessage() {
-        String time = tool.currentSystemTime();
+
         String[] badWeather = new String[]{
                 "强风/劲风", "疾风", "大风", "烈风", "风暴", "狂爆风", "飓风", "热带风暴", "中度霾", "重度霾", "严重霾", "阵雨", "雷阵雨", "雷阵雨并伴有冰雹", "小雨", "中雨", "大雨", "暴雨", "大暴雨", "特大暴雨", "强阵雨", "强雷阵雨", "极端降雨", "毛毛雨/细雨", "雨", "小雨-中雨", "中雨-大雨", "大雨-暴雨", "暴雨-大暴雨", "大暴雨-特大暴雨", "雨雪天气", "雨夹雪", "阵雨夹雪", "冻雨", "雪", "阵雪", "小雪", "中雪", "大雪", "暴雪", "小雪-中雪", "中雪-大雪", "大雪-暴雪", "浮尘", "扬沙", "沙尘暴", "强沙尘暴", "龙卷风", "雾", "浓雾", "强浓雾", "轻雾", "大雾", "特强浓雾", "未知"
         };
-        String message = "时间：" + time;
-        String goOutHint = "";
-        String temperatureHint = "";
-        if (Integer.parseInt(time.substring(0, 2)) >= 22) {
+        String message = "", goOutHint = "", temperatureHint = "";
+        if (judgmentTime()) {
             goOutHint += "时间太晚，";
         }
 
@@ -250,6 +281,7 @@ public class RunningFragment extends Fragment {
         if (!temperatureHint.isEmpty()) {
             message += temperatureHint;
         }
+
         message += "\n您确定开始跑步吗？";
 
         return message;
@@ -264,6 +296,7 @@ public class RunningFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (currentMileage > 0) {
+                    currentMileage = Float.parseFloat(String.format("%.2f", currentMileage / 1000.0f));
                     NightRunningDatabase helper = tool.getRunningDatabase(getActivity());
                     helper.upDateRecordsToMotionInfoTableRunning(helper.getReadableDatabase(),
                             MainActivity.USERNAME, "date('now','localtime')", currentMileage, currentRunningTime);
@@ -272,6 +305,7 @@ public class RunningFragment extends Fragment {
                 RUNNINGFLAG = 1 - RUNNINGFLAG;
                 currentRunningTime = 0;
                 timer.cancel();
+                wakeLock.release();
                 tool.showToast(getActivity(), "跑步结束，停止定位，请及时关闭GPS");
             }
         });
@@ -285,7 +319,7 @@ public class RunningFragment extends Fragment {
     }
 
     private String getStopRunningHintMessage() {
-        String message = "距离:" + currentMileage / 1000.0f +
+        String message = "距离:" + String.format("%.2f", currentMileage / 1000.0f) +
                 "km\n时间:" + tool.secondsConversion(currentRunningTime)
                 + "\n平均速度:" + String.valueOf(currentSpend / currentRunningTime)
                 + "m/s\n消耗卡路里:" + String.format("%.2f", tool.getCalories(MainActivity.USERWEIGHT, currentMileage) / 10.0f)
@@ -305,19 +339,30 @@ public class RunningFragment extends Fragment {
 
         private void setTextViewRunningTime() {
             mTextViewRunningTime.setText("时间\n" + tool.secondsConversion(currentRunningTime));
+            if (currentRunningTime % 2 == 0) {
+                mTextViewRunningTime.setBackgroundColor(Color.RED);
+            } else {
+                mTextViewRunningTime.setBackgroundColor(Color.BLUE);
+            }
+
         }
 
         private void setTextViewRunningSpeed() {
             mTextViewRunningSpeed.setText("速度\n" + String.valueOf(currentSpend));
+            if (currentRunningTime % 2 == 0) {
+                mTextViewRunningSpeed.setBackgroundColor(Color.BLUE);
+            } else {
+                mTextViewRunningSpeed.setBackgroundColor(Color.RED);
+            }
         }
     }
 
     private class MapLocationListener implements AMapLocationListener {
-
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 currentCity = aMapLocation.getCity();
+                currentAMapLocation = aMapLocation;
                 if (RUNNINGFLAG != 0) {
                     final LatLng currentLatng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
                     currentSpend = aMapLocation.getSpeed();
@@ -328,7 +373,20 @@ public class RunningFragment extends Fragment {
                     mLatLngs.add(lastLatLng);
                     mLatLngs.add(currentLatng);
                     mMap.addPolyline(getPolylineOptions(mLatLngs));
-                    currentMileage += AMapUtils.calculateLineDistance(lastLatLng, currentLatng);
+                    float distance = AMapUtils.calculateLineDistance(lastLatLng, currentLatng);
+                    currentMileage += distance;
+                    if (distance >= ((POSITIONINGCYCLE / 1000.0f) * SAFETYDISTANCE)) {
+                        safetySMS.sendSMS(aMapLocation, "速度异常(" + (distance / ((POSITIONINGCYCLE / 1000.0f))) + ")");
+                    }
+                    if (lastLatLng.toString().equals(currentCity)) {
+                        --SAFETYTIME;
+                        if (SAFETYTIME == 0) {
+                            safetySMS.sendSMS(aMapLocation, "超过3分钟静止不动");
+                            SAFETYTIME = 60;
+                        }
+                    } else {
+                        SAFETYTIME = 180;
+                    }
                     lastLatLng = currentLatng;
                 }
             }
@@ -346,8 +404,6 @@ public class RunningFragment extends Fragment {
             polylineOptions.addAll(latLngs);
             return polylineOptions;
         }
-
-
     }
 
     private class ButtonRunningOnClickListener implements View.OnClickListener {

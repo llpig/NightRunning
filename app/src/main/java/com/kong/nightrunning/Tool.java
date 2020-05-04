@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.amap.api.maps.model.LatLng;
 
 import java.io.File;
@@ -30,6 +31,7 @@ public class Tool {
         }
         return helper;
     }
+
 
     //消息类型
     public static enum MessageType {
@@ -69,7 +71,7 @@ public class Tool {
         if (second < 10) {
             time += "0";
         }
-        time += String.valueOf(second)+":";
+        time += String.valueOf(second);
         return time;
     }
 
@@ -125,8 +127,8 @@ public class Tool {
     }
 
     //保存跑步路线数据
-    public static void saveRunningPathDate(String fileName, List<LatLng> lagLngs) {
-        String filePath = "/sdcard/NightRunning";
+    public static void saveRunningDate(String fileName, String date) {
+        String filePath = PersonalCenterFragment.FILEPATH;
         File pathDir = new File(filePath);
         if (!pathDir.exists()) {
             pathDir.mkdirs();
@@ -135,11 +137,8 @@ public class Tool {
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(pathDate, true);
-            for (LatLng latLng : lagLngs) {
-                outputStream.write((latLng.toString() + "\n").getBytes());
-            }
+            outputStream.write((date + "\n").getBytes());
             outputStream.close();
-            loadFileData(pathDir + "/" + fileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -200,7 +199,7 @@ public class Tool {
 
         public class UserInfoTable {
             String tableName = "UserInfoTable", userName = "UserName", password = "Password", sex = "Sex", height = "Height",
-                    weight = "Weight", age = "Age", targetStepNumber = "TargetStepNumber", targetMileage = "TargetMileage", avatar = "Avatar";
+                    weight = "Weight", age = "Age", emergencyContact = "EmergencyContact", avatar = "Avatar";
         }
 
         public class MotionInfoTable {
@@ -216,6 +215,33 @@ public class Tool {
         }
     }
 
-    //计时器
+    //短信
+    public class SafetySMS {
+        private String mPhoneNumber;
+
+        SafetySMS(String phoneNumber) {
+            mPhoneNumber = phoneNumber;
+        }
+
+        public void sendSMS(AMapLocation location, String message) {
+            //获取短信管理器
+            android.telephony.SmsManager smsManager = android.telephony.SmsManager.getDefault();
+            //拆分短信内容（手机短信长度限制）
+            List<String> divideContents = smsManager.divideMessage(setMessage(location, message));
+            for (String text : divideContents) {
+                smsManager.sendTextMessage(mPhoneNumber, null, text, null, null);
+            }
+        }
+
+        private String setMessage(AMapLocation location, String message) {
+            String msg = "夜跑APP安全提示:" +
+                    "\n[用户]" + MainActivity.USERNAME +
+                    "\n[异常行为]" + message +
+                    "\n[位置]" + location.getCity() + location.getStreet() +
+                    "\n请及时联系。";
+            return msg;
+        }
+    }
+
 
 }

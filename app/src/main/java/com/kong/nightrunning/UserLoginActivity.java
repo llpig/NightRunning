@@ -20,15 +20,15 @@ public class UserLoginActivity extends AppCompatActivity {
     private TextView mTextViewRegistered, mTextViewForgetPassword;
     private Tool tool;
     private NightRunningDatabase helper;
-    public static String USERINFOFILENAME = "LoginInfo";
+    public static String USERINFOFILENAME = "userInfo";
     public static String USERNAME = "userName";
     public static String PASSWORD = "password";
     public static String AVATAR = "avatar";
-    public static String AGE="age";
-    public static String HEIGHT="height";
-    public static String WEIGHT="weight";
-    public static String SEX="sex";
-    public static String TARGETSTEPNUMBER="targetStepNumber";
+    public static String AGE = "age";
+    public static String HEIGHT = "height";
+    public static String WEIGHT = "weight";
+    public static String SEX = "sex";
+    public static String EMERGENCYCONTACT = "emergencyContact";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class UserLoginActivity extends AppCompatActivity {
     private void initActivity() {
         getSupportActionBar().hide();
         tool = new Tool();
-        helper=tool.getRunningDatabase(this);
+        helper = tool.getRunningDatabase(this);
         tool.showToast(this, "欢迎进入夜跑APP登录界面");
     }
 
@@ -74,11 +74,11 @@ public class UserLoginActivity extends AppCompatActivity {
         String checkPassword = values.getAsString(nightRunningDB.userInfoTable.password);
         String avatarPath = values.getAsString(nightRunningDB.userInfoTable.avatar);
 
-        int age=values.getAsInteger(nightRunningDB.userInfoTable.age).intValue();
-        int height=values.getAsInteger(nightRunningDB.userInfoTable.height).intValue();
-        double weight=values.getAsDouble(nightRunningDB.userInfoTable.weight).doubleValue();
-        boolean sex=values.getAsBoolean(nightRunningDB.userInfoTable.sex).booleanValue();
-        int targetStepNumber=values.getAsInteger(nightRunningDB.userInfoTable.targetStepNumber).intValue();
+        int age = values.getAsInteger(nightRunningDB.userInfoTable.age).intValue();
+        int height = values.getAsInteger(nightRunningDB.userInfoTable.height).intValue();
+        double weight = values.getAsDouble(nightRunningDB.userInfoTable.weight).doubleValue();
+        boolean sex = values.getAsBoolean(nightRunningDB.userInfoTable.sex).booleanValue();
+        String emergencyContact = values.getAsString(nightRunningDB.userInfoTable.emergencyContact).toString().trim();
 
         if (userName.isEmpty() || password.isEmpty()) {
             tool.showToast(this, "用户名或密码为空");
@@ -91,11 +91,11 @@ public class UserLoginActivity extends AppCompatActivity {
                 editor.putString(USERNAME, userName);
                 editor.putString(PASSWORD, password);
                 editor.putString(AVATAR, avatarPath);
-                editor.putInt(AGE,age);
-                editor.putInt(HEIGHT,height);
-                editor.putFloat(WEIGHT,(float)weight);
-                editor.putBoolean(SEX,sex);
-                editor.putInt(TARGETSTEPNUMBER,targetStepNumber);
+                editor.putInt(AGE, age);
+                editor.putInt(HEIGHT, height);
+                editor.putFloat(WEIGHT, (float) weight);
+                editor.putBoolean(SEX, sex);
+                editor.putString(EMERGENCYCONTACT, emergencyContact);
                 editor.commit();
                 tool.showToast(this, "登录成功，即将为您跳转到主界面");
                 Log.i("DATA", "userName：" + userName + ",密码：" + password + ",头像：" + avatarPath);

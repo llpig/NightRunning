@@ -19,8 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/TextViewRunningTime"
@@ -29,6 +29,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:text="时间\n00:00:00"
+            android:textColor="@color/colorBlack"
             android:textSize="24sp">
 
         </TextView>
@@ -37,9 +38,9 @@
             android:id="@+id/ButtonRunningFlag"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:layout_marginRight="30dp"
             android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_weight="2"
             android:background="@drawable/start_running">
 
         </Button>
@@ -51,6 +52,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:text="速度\n0\\s"
+            android:textColor="@color/colorBlack"
             android:textSize="24sp">
 
         </TextView>

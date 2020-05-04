@@ -10,6 +10,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NightRunningDatabase extends SQLiteOpenHelper {
@@ -40,7 +41,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 "[Age] int check(Age>0) Not Null," +
                 "[Height] double check(Height>0) Not Null," +
                 "[Weight] double check(Weight>0) Not Null," +
-                "[TargetStepNumber] int check(TargetStepNumber>0) default 0," +
+                "[EmergencyContact] varchar(11) Not Null," +
                 "[Avatar] varchar(255)" +
                 ");";
         return sql;
@@ -49,7 +50,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
 
     //插入记录（用户信息表）将用户信息存储在本地，通过文件查询
     public boolean insertRecordsToUserInfoTable(SQLiteDatabase db, String userName, String password, int sex, int age,
-                                                double height, double weight, int targetStepNumber, String avatar) {
+                                                double height, double weight, String avatar, String emergencyContact) {
         ContentValues values = new ContentValues();
         values.put(nightRunningDB.userInfoTable.userName, userName);
         values.put(nightRunningDB.userInfoTable.password, password);
@@ -57,10 +58,31 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         values.put(nightRunningDB.userInfoTable.age, age);
         values.put(nightRunningDB.userInfoTable.height, height);
         values.put(nightRunningDB.userInfoTable.weight, weight);
-        values.put(nightRunningDB.userInfoTable.targetStepNumber, targetStepNumber);
         values.put(nightRunningDB.userInfoTable.avatar, avatar);
+        values.put(nightRunningDB.userInfoTable.emergencyContact, emergencyContact);
         //如果结果返回-1，则说明插入失败
         return (db.insert(nightRunningDB.userInfoTable.tableName, null, values) == -1 ? false : true);
+    }
+
+    //更新紧急联系人
+    public boolean updateEmergencyContact(SQLiteDatabase db, String userName, String contactPhone) {
+        String whereStr = nightRunningDB.userInfoTable.userName + "=\"" + userName + "\"";
+        ContentValues values = new ContentValues();
+        values.put(nightRunningDB.userInfoTable.emergencyContact, contactPhone);
+        return (db.update(nightRunningDB.userInfoTable.tableName, values, whereStr, null) != 1 ? false : true);
+    }
+
+    public String selectEmergencyContact(SQLiteDatabase db, String userName) {
+        String whereStr = "UserName=" + "\"" + userName + "\"" + ";";
+        String temp = "";
+        String[] select = new String[]{
+                nightRunningDB.userInfoTable.emergencyContact
+        };
+        Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, select, whereStr, null, null, null, null);
+        while (cursor.moveToNext()) {
+            temp = cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.emergencyContact));
+        }
+        return temp.trim();
     }
 
     //查询
@@ -74,7 +96,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
                 nightRunningDB.userInfoTable.height,
                 nightRunningDB.userInfoTable.weight,
                 nightRunningDB.userInfoTable.sex,
-                nightRunningDB.userInfoTable.targetStepNumber
+                nightRunningDB.userInfoTable.emergencyContact
         };
         Cursor cursor = db.query(nightRunningDB.userInfoTable.tableName, select, whereStr, null, null, null, null);
         while (cursor.moveToNext()) {
@@ -84,7 +106,7 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
             values.put(nightRunningDB.userInfoTable.height, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.height)));
             values.put(nightRunningDB.userInfoTable.weight, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.weight)));
             values.put(nightRunningDB.userInfoTable.sex, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.sex)));
-            values.put(nightRunningDB.userInfoTable.targetStepNumber, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.targetStepNumber)));
+            values.put(nightRunningDB.userInfoTable.emergencyContact, cursor.getString(cursor.getColumnIndex(nightRunningDB.userInfoTable.emergencyContact)));
         }
         return values;
     }
@@ -133,6 +155,27 @@ public class NightRunningDatabase extends SQLiteOpenHelper {
         return values;
     }
 
+    public List<String[]> selectHistoryData(SQLiteDatabase db, String userName) {
+        String whereStr = "UserName=" + "\"" + userName + "\"" + ";";
+        String[] select = new String[]{
+                nightRunningDB.motionInfoTable.date,
+                nightRunningDB.motionInfoTable.stepNumber,
+                nightRunningDB.motionInfoTable.mileage,
+        };
+        List<String[]> historyDataList = new ArrayList<>();
+        String[] historyData;
+        Cursor cursor = db.query(nightRunningDB.motionInfoTable.tableName, select, whereStr, null, null, null, null);
+        while (cursor.moveToNext()) {
+            historyData = new String[3];
+            historyData[0] = cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.date));
+            historyData[1] = cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.stepNumber));
+            historyData[2] = cursor.getString(cursor.getColumnIndex(nightRunningDB.motionInfoTable.mileage));
+            historyDataList.add(historyData);
+        }
+        historyDataList.remove(historyDataList.size() - 1);
+        Collections.reverse(historyDataList);
+        return historyDataList;
+    }
 
     //更新记录(运行信息表,普通)
     public boolean upDateRecordsToMotionInfoTableNormal(SQLiteDatabase db, String userName, String date,

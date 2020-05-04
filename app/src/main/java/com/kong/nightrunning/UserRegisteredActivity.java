@@ -47,7 +47,7 @@ public class UserRegisteredActivity extends AppCompatActivity {
 
     public void initActivity() {
         tool = new Tool();
-        helper =tool.getRunningDatabase(this);
+        helper = tool.getRunningDatabase(this);
         getSupportActionBar().hide();
         findViewAndSetOnClickListener();
         checkPermissions();
@@ -84,23 +84,25 @@ public class UserRegisteredActivity extends AppCompatActivity {
     private void getInputInformationSave() {
         //用户名
         String userName = ((EditText) findViewById(R.id.EditTextRegUserName)).getText().toString().trim();
-        //邮箱
-        String email = ((EditText) findViewById(R.id.EditTextRegEmergencyContact)).getText().toString().trim();
+        //手机号
+        String contact = ((EditText) findViewById(R.id.EditTextRegEmergencyContact)).getText().toString().trim();
         //年龄
-        int age = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegAge)).getText().toString().trim());
+        String ageStr = ((EditText) findViewById(R.id.EditTextRegAge)).getText().toString().trim();
         //身高
-        int height = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegHeight)).getText().toString().trim());
+        String heightStr = ((EditText) findViewById(R.id.EditTextRegHeight)).getText().toString().trim();
         //体重
-        int weight = Integer.parseInt(((EditText) findViewById(R.id.EditTextRegWeight)).getText().toString().trim());
+        String weightStr = ((EditText) findViewById(R.id.EditTextRegWeight)).getText().toString().trim();
         //密码
         String password = tool.getMD5Code(((EditText) findViewById(R.id.EditTextRegPassword)).getText().toString().trim());
         //确认密码
         String checkPassword = tool.getMD5Code(((EditText) findViewById(R.id.EditTextRegCheckPassword)).getText().toString().trim());
-        int targetStepNumber=6000;
-        if (checkData(userName, password, checkPassword)) {
+        if (checkData(userName, password, checkPassword, ageStr, heightStr, weightStr, contact)) {
+            int age = Integer.parseInt(ageStr);
+            int height = Integer.parseInt(heightStr);
+            int weight = Integer.parseInt(weightStr);
             //将数据更新到数据库
             SQLiteDatabase db = helper.getReadableDatabase();
-            if (helper.insertRecordsToUserInfoTable(db, userName, password, USERSEX, age, height, weight, targetStepNumber, mUserAvatarPath)) {
+            if (helper.insertRecordsToUserInfoTable(db, userName, password, USERSEX, age, height, weight, mUserAvatarPath, contact)) {
                 tool.showToast(UserRegisteredActivity.this, "您已成功注册即将为您跳转到登录界面");
                 tool.startActivityFromIntent(UserRegisteredActivity.this, UserLoginActivity.class);
             } else {
@@ -109,15 +111,21 @@ public class UserRegisteredActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkData(String userName, String password, String checkPassword) {
+    private boolean checkData(String userName, String password, String checkPassword, String ageStr, String heightStr, String weightStr, String contact) {
         boolean bRet = true;
         String tmp = new String();
-        if (userName == null) {
-            tmp = "用户名为空";
+        if (userName == null || mUserAvatarPath == null || contact == null || ageStr == null ||
+                heightStr == null || weightStr == null || password == null || checkPassword == null) {
+            tmp = "信息未完整填写,请检查。";
             bRet = false;
-        }
-        if (!(password.equals(checkPassword))) {
-            tmp = "两次密码输入不一致";
+        } else if (ageStr.isEmpty() || heightStr.isEmpty() || weightStr.isEmpty()) {
+            tmp = "信息未完整填写，请检查。";
+            bRet = false;
+        } else if (contact.length() != 11) {
+            tmp = "手机号码格式错误，请检查。";
+            bRet = false;
+        } else if (!(password.equals(checkPassword))) {
+            tmp = "两次密码输入不一致,请检查。";
             bRet = false;
         }
         tool.showToast(this, tmp);
